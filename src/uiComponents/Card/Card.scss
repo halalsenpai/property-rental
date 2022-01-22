@@ -1,0 +1,10 @@
+.custom-card {
+  display: flex;
+  .card-left {
+    background-color: aquamarine;
+    flex: 1;
+  }
+  .card-right {
+    flex: 1;
+  }
+}

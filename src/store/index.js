@@ -3,6 +3,7 @@ import { combineReducers, configureStore, getDefaultMiddleware } from "@reduxjs/
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 
 import authReducer from "../auth/slice";
+import propertySearchReducer from "../pages/PropertySearch/slice";
 
 const authPersistConfig = {
   key: "auth",
@@ -12,6 +13,7 @@ const authPersistConfig = {
 
 const reducers = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
+  propertySearch: propertySearchReducer,
 });
 
 export const store = configureStore({

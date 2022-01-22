@@ -1,5 +1,7 @@
+import { Col, Row } from "antd";
 import React from "react";
 import { Filter } from "../../appComponents/Filter.jsx/Filter";
+import { Card } from "../../uiComponents/Card/Card";
 
 export const PropertySearch = () => {
   return (
@@ -21,11 +23,22 @@ export const PropertySearch = () => {
           <Filter />
         </div>
         <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-          ...
+          <Row gutter={[16, 16]} wrap>
+            <Col span={12} sm={24} md={12} lg={8}>
+              <Card title={"Commercial to Residential"} description={"List Price: $250,000"} />
+            </Col>
+            <Col span={12} sm={24} md={12} lg={8}>
+              <Card title={"Commercial to Residential"} description={"List Price: $250,000"} />
+            </Col>
+            <Col span={16} sm={24} md={12} lg={8}>
+              <Card title={"Commercial to Residential"} description={"List Price: $250,000"} />
+            </Col>
+            <Col span={16} sm={24} md={12} lg={8}>
+              <Card title={"Commercial to Residential"} description={"List Price: $250,000"} />
+            </Col>
+          </Row>
         </div>
-        <div className="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-          ...
-        </div>
+        <div className="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"></div>
       </div>
     </div>
   );

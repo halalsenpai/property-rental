@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { App } from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+import "bootstrap";
 import "antd/dist/antd.css";
 import "./assets/scss/index.scss";
 import { Provider } from "react-redux";

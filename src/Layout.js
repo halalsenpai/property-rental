@@ -2,16 +2,26 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Navbar } from "./appComponents/Navbar/Navbar";
+import { selectAuthSuccess } from "./auth/slice";
 import { getUserInfo } from "./auth/thunk";
 import { PropertySearch } from "./pages/PropertySearch/PropertySearch";
 import { getPropertyTypes } from "./pages/PropertySearch/service";
+import { selectPropertyTypes } from "./pages/PropertySearch/slice";
 import { getToken, setToken } from "./utils/auth";
-import { useAppDispatch, useQuery } from "./utils/hooks";
+import { useAppDispatch, useAppSelector, useQuery } from "./utils/hooks";
 
 export const Layout = () => {
-  const [authenticated, setauthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
   const query = useQuery();
   const dispatch = useAppDispatch();
+
+  const selectIsAuthenticated = useAppSelector(selectAuthSuccess);
+
+  useEffect(() => {
+    console.log("is auth", selectIsAuthenticated);
+    setAuthenticated(selectIsAuthenticated);
+  }, [selectIsAuthenticated]);
+
   useEffect(() => {
     const token = query.get("token");
     const localToken = getToken();
