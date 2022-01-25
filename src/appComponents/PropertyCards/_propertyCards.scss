@@ -1,5 +1,6 @@
 .property-cards-container {
-  height: calc(100vh - 160px);
+  position: relative;
+  height: 100%;
   overflow-y: scroll;
   padding-bottom: 16px;
 }

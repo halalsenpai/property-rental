@@ -1,3 +1,44 @@
 .app-container {
   height: calc(100vh - 56px);
+
+  .left-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 56px);
+    overflow-y: hidden;
+  }
+  .ant-collapse {
+    position: relative;
+    .ant-collapse-item {
+      position: relative;
+      .ant-collapse-header {
+        position: absolute;
+        background-color: rgb(0, 112, 163);
+        border-radius: 30px !important;
+        width: fit-content;
+        top: 16px;
+        left: 5%;
+
+        transition: 1s ease;
+        div {
+          display: none;
+        }
+      }
+      &.ant-collapse-item-active {
+        .ant-collapse-header {
+          position: absolute;
+          background-color: rgb(0, 112, 163);
+          border-radius: 30px !important;
+          width: fit-content;
+          top: 16px;
+
+          left: 90%;
+          transition: 1s ease;
+          .bi-funnel-fill::before {
+            content: "\f623";
+          }
+        }
+      }
+    }
+  }
 }

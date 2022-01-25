@@ -12,7 +12,7 @@ export const Navbar = () => {
           <Select style={{ width: "100px", height: "38px" }} placeholder="Tool">
             <Option>Escudo</Option>
           </Select>
-          <button type="button" class="btn btn-danger ms-3">
+          <button type="button" className="btn btn-danger ms-3">
             Logout
           </button>
         </div>
