@@ -18,10 +18,6 @@ export const Filter = () => {
     dispatch(getPropertyTypes());
   }, []);
 
-  useEffect(() => {
-    console.log(propertyTypes);
-  }, [propertyTypes]);
-
   function handleChange(value) {
     console.log(`selected ${value}`);
   }
