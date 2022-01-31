@@ -14,7 +14,7 @@ export const PropertyModal = (props) => {
     setModalData(null);
   };
   return (
-    <Modal title="Property Details" visible={showModal} onOk={handleOk} onCancel={handleCancel}>
+    <Modal width={1000} title="Property Details" visible={showModal} onOk={handleOk} onCancel={handleCancel}>
       {children}
     </Modal>
   );
