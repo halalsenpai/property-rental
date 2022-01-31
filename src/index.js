@@ -5,6 +5,7 @@ import reportWebVitals from "./reportWebVitals";
 
 import "bootstrap";
 import "antd/dist/antd.css";
+import "@fortawesome/fontawesome-free/js/all";
 import "./assets/scss/index.scss";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";

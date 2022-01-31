@@ -8,8 +8,7 @@ export const getPropertyTypes = createAsyncThunk("propertySearch/get-property-ty
   return response.data;
 });
 
-export const getProperties = createAsyncThunk("propertySearch/get-propeties", async ({ qs }) => {
-  const _qs = jsonToQueryString(qs);
-  const response = await getPropertiesAPI(_qs);
+export const getProperties = createAsyncThunk("propertySearch/get-propeties", async ({ params }) => {
+  const response = await getPropertiesAPI(params);
   return response.data;
 });

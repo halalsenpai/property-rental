@@ -2,4 +2,32 @@
   .ant-divider {
     margin: 6px 0;
   }
+  .tag-div {
+    position: absolute;
+    display: flex;
+    padding: 4px;
+    justify-content: end;
+    z-index: 1;
+    .ant-badge {
+      position: relative;
+      .ant-badge-count {
+        height: 24px;
+        font-size: 14px;
+        line-height: 24px;
+        border-radius: 14px;
+      }
+    }
+  }
+  .ant-card-body {
+    height: 400px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    .street-view-btn {
+      margin-top: auto;
+      span {
+        font-size: 14px;
+      }
+    }
+  }
 }
