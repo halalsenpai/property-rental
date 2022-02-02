@@ -31,14 +31,84 @@ ul {
 
 // custom icons
 .custom-icon {
-  svg {
-    display: none;
-  }
   &.empty {
     display: block;
-    background: url("../icons/logo512.png") no-repeat;
-    background-size: 20px 20px;
-    width: 20px;
-    height: 20px;
+    background: url("../icons/empty.png") no-repeat;
+    background-size: 30px 30px;
+    width: 30px;
+    height: 30px;
+    svg {
+      display: none;
+    }
+  }
+  &.knotweed {
+    display: block;
+    background: url("../icons/knotweed.png") no-repeat;
+    background-size: 30px 30px;
+    width: 30px;
+    height: 30px;
+    svg {
+      display: none;
+    }
+  }
+  &.retirement {
+    display: block;
+    background: url("../icons/retirement.png") no-repeat;
+    background-size: 30px 30px;
+    width: 30px;
+    height: 30px;
+    svg {
+      display: none;
+    }
+  }
+  &.shared-ownership {
+    display: block;
+    background: url("../icons/shared-ownership.png") no-repeat;
+    background-size: 30px 30px;
+    width: 30px;
+    height: 30px;
+    svg {
+      display: none;
+    }
+  }
+  &.tenanted {
+    display: block;
+    background: url("../icons/tenanted.png") no-repeat;
+    background-size: 30px 30px;
+    width: 30px;
+    height: 30px;
+    svg {
+      display: none;
+    }
+  }
+  &.portfolio {
+    display: block;
+    background: url("../icons/portfolio.png") no-repeat;
+    background-size: 30px 30px;
+    width: 30px;
+    height: 30px;
+    svg {
+      display: none;
+    }
+  }
+  &.online-viewing {
+    display: block;
+    background: url("../icons/virtual-tour.png") no-repeat;
+    background-size: 30px 30px;
+    width: 30px;
+    height: 30px;
+    svg {
+      display: none;
+    }
+  }
+  &.full-planning {
+    display: block;
+    background: url("../icons/planning.png") no-repeat;
+    background-size: 30px 30px;
+    width: 30px;
+    height: 30px;
+    svg {
+      display: none;
+    }
   }
 }
