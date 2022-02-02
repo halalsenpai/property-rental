@@ -73,9 +73,9 @@ export const findIcon = (keyword) => {
 
     case "Online_Viewing":
       return "online-viewing";
-    
+
     case "Full_Planning":
-      return "full-planning"
+      return "full-planning";
   }
 };
 
@@ -85,4 +85,8 @@ export const getTagText = (keyword) => {
     return m.toUpperCase();
   });
   return keyword;
+};
+
+export const cleanObject = (obj) => {
+  return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null));
 };

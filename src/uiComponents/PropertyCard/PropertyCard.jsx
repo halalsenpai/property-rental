@@ -1,19 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Card, Badge, Carousel, Tooltip, Divider, Space } from "antd";
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from "@ant-design/icons";
 import "./_propertyCard.scss";
 import { findIcon, getTagText } from "../../helpers/helpers";
+import { PropertyModal } from "../../appComponents/PropertyModal/PropertyModal";
 
 export const PropertyCard = (props) => {
-  const { propertyData, setModalData, showModal, setShowModal, type } = props;
+  const { propertyData, type } = props;
   const { category, extra, bedrooms, source, calc_posted, reduced, keywords } = propertyData;
   const { title, images, price_history, prop_address } = extra;
 
-  console.log(props);
+  const [showModal, setShowModal] = useState(false);
 
   const handleOpenPropertyModal = () => {
-    setModalData(propertyData);
+    setShowModal(true);
   };
 
   return (
@@ -43,7 +44,7 @@ export const PropertyCard = (props) => {
             <SettingOutlined key="setting" />,
             <EditOutlined key="edit" />,
             <Tooltip title="View more details">
-              <span onClick={handleOpenPropertyModal}>
+              <span onClick={() => handleOpenPropertyModal()}>
                 <i className="fas fa-expand-arrows-alt"></i>
               </span>
             </Tooltip>,
@@ -101,6 +102,7 @@ export const PropertyCard = (props) => {
         </button>
       </Card>
       {/* </Badge.Ribbon> */}
+      {showModal && <PropertyModal propertyData={propertyData} showModal={showModal} setShowModal={setShowModal} />}
     </div>
   );
 };

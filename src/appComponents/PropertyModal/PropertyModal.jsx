@@ -1,19 +1,18 @@
 import React, { useState } from "react";
-import { Modal, Button, Divider, Descriptions, PageHeader, Empty } from "antd";
+import { Modal, Button, Divider, Descriptions, PageHeader, Empty, Tooltip, Space } from "antd";
+import { findIcon, getTagText } from "../../helpers/helpers";
 
 export const PropertyModal = (props) => {
-  const { showModal, setShowModal, setModalData, propertyData } = props;
-  const { category, extra, bedrooms, source, calc_posted, reduced, region } = propertyData;
-  const { title, images, price_history, prop_address, agent, agent_phone, agent_address, sold_history } = extra;
+  const { showModal, setShowModal, propertyData } = props;
+  const { category, extra, bedrooms, source, calc_posted, reduced, region, keywords } = propertyData || {};
+  const { title, images, price_history, prop_address, agent, agent_phone, agent_address, sold_history } = extra || {};
 
   const handleOk = () => {
     setShowModal(false);
-    setModalData(null);
   };
 
   const handleCancel = () => {
     setShowModal(false);
-    setModalData(null);
   };
   console.log(propertyData);
   return (
@@ -39,6 +38,16 @@ export const PropertyModal = (props) => {
           </Descriptions.Item>
         )}
       </Descriptions>
+      <Space>
+        {keywords?.length > 0 &&
+          keywords.map((word, i) => (
+            <Tooltip title={getTagText(word)}>
+              <span className={`custom-icon ${findIcon(word)}`}>
+                <i className={`fas fa-${findIcon(word)} fa-2x`}></i>
+              </span>
+            </Tooltip>
+          ))}
+      </Space>
       <Divider />
 
       <Descriptions title={"Agent Info"} bordered>
@@ -54,7 +63,7 @@ export const PropertyModal = (props) => {
       </Descriptions>
       <Divider />
       <Descriptions title={"Price History"} bordered>
-        {price_history.length ? (
+        {price_history?.length ? (
           <>
             <Descriptions.Item span={2}>
               <div className="d-flex justify-content-between all-text-muted">
@@ -82,7 +91,7 @@ export const PropertyModal = (props) => {
       </Descriptions>
       <Divider />
       <Descriptions title={"Sold History"} bordered>
-        {sold_history.length ? (
+        {sold_history?.length ? (
           <>
             <Descriptions.Item span={2}>
               <div className="d-flex justify-content-between all-text-muted">
@@ -93,8 +102,8 @@ export const PropertyModal = (props) => {
                 price_history.length > 0 &&
                 price_history.map((item, i) => (
                   <div className="d-flex justify-content-between all-text-muted">
-                    <span>{item.date}</span>
-                    <span>{item.price}</span>
+                    <span>{item?.date}</span>
+                    <span>{item?.price}</span>
                   </div>
                 ))}
             </Descriptions.Item>

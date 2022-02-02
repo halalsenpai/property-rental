@@ -1,14 +1,23 @@
 import { Col, Divider, Layout, Row, Select, Slider, Collapse } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { Filter } from "../../appComponents/Filter.jsx/Filter";
 import { MapComponent } from "../../appComponents/MapComponent/MapComponent";
 import { PropertyCards } from "../../appComponents/PropertyCards/PropertyCards";
 import { Card } from "../../uiComponents/Card/Card";
+import { useAppDispatch } from "../../utils/hooks";
+import { getKeywordsRulesList, getPropertyTypes } from "./thunk";
 import "./_propertySearch.scss";
 
 const { Panel } = Collapse;
 
 export const PropertySearch = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getPropertyTypes());
+    dispatch(getKeywordsRulesList());
+  }, []);
+
   return (
     <div className="app-container">
       <Row className="">

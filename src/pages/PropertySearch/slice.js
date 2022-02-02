@@ -1,12 +1,13 @@
 import { createSlice, isPending, isRejected } from "@reduxjs/toolkit";
-import { getProperties, getPropertyTypes } from "./thunk";
+import { getKeywordsRulesList, getProperties, getPropertyTypes } from "./thunk";
 
-const thunks = [getPropertyTypes, getProperties];
+const thunks = [getPropertyTypes, getProperties, getKeywordsRulesList];
 
 const initialState = {
   status: "idle",
   propertyTypes: [],
   properties: [],
+  keywordsRulesList: [],
 };
 
 export const slice = createSlice({
@@ -23,6 +24,10 @@ export const slice = createSlice({
         state.status = "idle";
         state.properties = action.payload;
       })
+      .addCase(getKeywordsRulesList.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.keywordsRulesList = action.payload;
+      })
       .addMatcher(isPending(...thunks), (state) => {
         state.status = "loading";
       })
@@ -35,5 +40,6 @@ export const slice = createSlice({
 export const selectStatus = (state) => state.propertySearch.status === "loading";
 export const selectPropertyTypes = (state) => state.propertySearch.propertyTypes;
 export const selectProperties = (state) => state.propertySearch.properties;
+export const selectKeywordsRulesList = (state) => state.propertySearch.keywordsRulesList;
 
 export default slice.reducer;
