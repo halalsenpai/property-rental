@@ -1,13 +1,16 @@
 import React, { useEffect } from "react";
 
-import { Card, Badge, Carousel, Tooltip, Divider } from "antd";
+import { Card, Badge, Carousel, Tooltip, Divider, Space } from "antd";
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from "@ant-design/icons";
 import "./_propertyCard.scss";
+import { findIcon, getTagText } from "../../helpers/helpers";
 
 export const PropertyCard = (props) => {
   const { propertyData, setModalData, showModal, setShowModal, type } = props;
-  const { category, extra, bedrooms, source, calc_posted, reduced } = propertyData;
+  const { category, extra, bedrooms, source, calc_posted, reduced, keywords } = propertyData;
   const { title, images, price_history, prop_address } = extra;
+
+  console.log(props);
 
   const handleOpenPropertyModal = () => {
     setModalData(propertyData);
@@ -80,10 +83,20 @@ export const PropertyCard = (props) => {
           <span>{calc_posted}</span>
         </div>
         <Divider dashed />
+        <Space>
+          {keywords?.length > 0 &&
+            keywords.map((word, i) => (
+              <Tooltip title={getTagText(word)}>
+                <span className={`custom-icon ${findIcon(word)}`}>
+                  <i className={`fas fa-${findIcon(word)} fa-2x`}></i>
+                </span>
+              </Tooltip>
+            ))}
+        </Space>
         <button className="btn btn-primary street-view-btn">
           <span className="me-1">Open in Street view</span>
           <span>
-            <i className="fas fa-street-view"></i>
+            <i className="fas fa-street-view "></i>
           </span>
         </button>
       </Card>

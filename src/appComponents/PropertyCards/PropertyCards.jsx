@@ -16,7 +16,7 @@ export const PropertyCards = () => {
   const properties = useAppSelector(selectProperties);
 
   useEffect(() => {
-    dispatch(getProperties({ params: "limit=4" }));
+    dispatch(getProperties({ params: "limit=50" }));
   }, []);
 
   useEffect(() => {
@@ -36,9 +36,7 @@ export const PropertyCards = () => {
             </Col>
           ))}
       </Row>
-      <PropertyModal setModalData={setModalData} showModal={showModal} setShowModal={setShowModal}>
-        <PropertyCard propertyData={modalData} type="modal" />
-      </PropertyModal>
+      {showModal && <PropertyModal propertyData={modalData} setModalData={setModalData} showModal={showModal} setShowModal={setShowModal} />}
     </div>
   );
 };

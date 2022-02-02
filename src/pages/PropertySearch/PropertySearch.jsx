@@ -13,8 +13,8 @@ export const PropertySearch = () => {
     <div className="app-container">
       <Row className="">
         <Col className="left-container" span={12}>
-          <Collapse defaultActiveKey={["1"]} onChange={() => {}}>
-            <Panel header={<i class="bi bi-funnel-fill text-light"></i>} key="1">
+          <Collapse onChange={() => {}}>
+            <Panel header={<i className="bi bi-funnel-fill text-light"></i>} key="1">
               <Filter />
             </Panel>
           </Collapse>
@@ -34,21 +34,6 @@ export const PropertySearch = () => {
           />
         </Col>
       </Row>
-
-      {/* <Row gutter={[16, 16]} wrap>
-        <Col span={12} sm={24} md={12} lg={8}>
-          <Card title={"Commercial to Residential"} description={"List Price: $250,000"} />
-        </Col>
-        <Col span={12} sm={24} md={12} lg={8}>
-          <Card title={"Commercial to Residential"} description={"List Price: $250,000"} />
-        </Col>
-        <Col span={16} sm={24} md={12} lg={8}>
-          <Card title={"Commercial to Residential"} description={"List Price: $250,000"} />
-        </Col>
-        <Col span={16} sm={24} md={12} lg={8}>
-          <Card title={"Commercial to Residential"} description={"List Price: $250,000"} />
-        </Col>
-      </Row> */}
     </div>
   );
 };
