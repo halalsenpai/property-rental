@@ -1,16 +1,18 @@
 import { Col, Divider, Layout, Row, Select, Slider, Collapse } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Filter } from "../../appComponents/Filter.jsx/Filter";
 import { MapComponent } from "../../appComponents/MapComponent/MapComponent";
 import { PropertyCards } from "../../appComponents/PropertyCards/PropertyCards";
 import { Card } from "../../uiComponents/Card/Card";
 import { useAppDispatch } from "../../utils/hooks";
-import { getKeywordsRulesList, getPropertyTypes } from "./thunk";
+import { getKeywordsRulesList, getProperties, getPropertyTypes } from "./thunk";
 import "./_propertySearch.scss";
 
 const { Panel } = Collapse;
 
 export const PropertySearch = () => {
+  const [activePanel, setActivePanel] = useState(null);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -22,9 +24,13 @@ export const PropertySearch = () => {
     <div className="app-container">
       <Row className="">
         <Col className="left-container" span={12}>
-          <Collapse onChange={() => {}}>
+          <Collapse
+            activeKey={activePanel}
+            onChange={(v) => {
+              setActivePanel(v);
+            }}>
             <Panel header={<i className="bi bi-funnel-fill text-light"></i>} key="1">
-              <Filter />
+              <Filter setActivePanel={setActivePanel} />
             </Panel>
           </Collapse>
           <div className="menu-bar d-flex justify-content-end align-items-center" style={{ marginTop: "24px", paddingInline: "24px" }}>

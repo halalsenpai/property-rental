@@ -26,7 +26,7 @@ export const PropertyCard = (props) => {
         extra={<div style={{ zIndex: "22" }}></div>}
         cover={
           <>
-            <div className="tag-div">{reduced && <Badge style={{ backgroundColor: "#52c41a" }} count={`Reduced: ${reduced.toFixed(0)}%`} />}</div>
+            <div className="tag-div">{reduced !== null && <Badge style={{ backgroundColor: "#52c41a" }} count={`Reduced: ${reduced.toFixed(0)}%`} />}</div>
             <Carousel>
               {images &&
                 images.split(";").map((img, i) => (
@@ -39,17 +39,15 @@ export const PropertyCard = (props) => {
             </Carousel>
           </>
         }
-        actions={
-          type !== "modal" && [
-            <SettingOutlined key="setting" />,
-            <EditOutlined key="edit" />,
-            <Tooltip title="View more details">
-              <span onClick={() => handleOpenPropertyModal()}>
-                <i className="fas fa-expand-arrows-alt"></i>
-              </span>
-            </Tooltip>,
-          ]
-        }>
+        actions={[
+          <SettingOutlined key="setting" />,
+          <i className="fas fa-street-view" key={"street-view"}></i>,
+          <Tooltip title="View more details">
+            <span onClick={() => handleOpenPropertyModal()}>
+              <i className="fas fa-expand-arrows-alt"></i>
+            </span>
+          </Tooltip>,
+        ]}>
         {" "}
         <div className="d-flex justify-content-between all-text-muted">
           <span>category</span>
@@ -87,19 +85,13 @@ export const PropertyCard = (props) => {
         <Space>
           {keywords?.length > 0 &&
             keywords.map((word, i) => (
-              <Tooltip title={getTagText(word)}>
+              <Tooltip key={i} title={getTagText(word)}>
                 <span className={`custom-icon ${findIcon(word)}`}>
                   <i className={`fas fa-${findIcon(word)} fa-2x`}></i>
                 </span>
               </Tooltip>
             ))}
         </Space>
-        <button className="btn btn-primary street-view-btn">
-          <span className="me-1">Open in Street view</span>
-          <span>
-            <i className="fas fa-street-view "></i>
-          </span>
-        </button>
       </Card>
       {/* </Badge.Ribbon> */}
       {showModal && <PropertyModal propertyData={propertyData} showModal={showModal} setShowModal={setShowModal} />}
