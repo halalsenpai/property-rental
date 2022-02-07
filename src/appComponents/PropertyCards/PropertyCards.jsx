@@ -13,7 +13,7 @@ export const PropertyCards = () => {
   const properties = useAppSelector(selectProperties);
 
   useEffect(() => {
-    dispatch(getProperties({ params: "limit=50" }));
+    dispatch(getProperties({ params: "limit=5" }));
   }, []);
 
   // useEffect(() => {
