@@ -1,10 +1,15 @@
-import { Col, Divider, Layout, Row, Select, Slider, Collapse } from "antd";
+import { InfoBox, Marker, StreetViewPanorama, StreetViewService } from "@react-google-maps/api";
+import { Col, Divider, Layout, Row, Select, Slider, Collapse, Popover, Tooltip } from "antd";
 import React, { memo, useEffect, useState } from "react";
+import { useRef } from "react";
 import { Filter } from "../../appComponents/Filter.jsx/Filter";
 import MapComponent from "../../appComponents/MapComponent/MapComponent";
 import { PropertyCards } from "../../appComponents/PropertyCards/PropertyCards";
 import { Card } from "../../uiComponents/Card/Card";
-import { useAppDispatch } from "../../utils/hooks";
+import { MarkerPopover } from "../../uiComponents/MarkerPopover/MarkerPopover";
+import { PropertyCard } from "../../uiComponents/PropertyCard/PropertyCard";
+import { useAppDispatch, useAppSelector } from "../../utils/hooks";
+import { openStreetView, selectProperties, selectStreetViewCords } from "./slice";
 import { getKeywordsRulesList, getProperties, getPropertyTypes } from "./thunk";
 import "./_propertySearch.scss";
 
@@ -13,12 +18,26 @@ const { Panel } = Collapse;
 export const PropertySearch = () => {
   const [activePanel, setActivePanel] = useState(null);
 
+  const properties = useAppSelector(selectProperties);
+  const streetViewCords = useAppSelector(selectStreetViewCords);
+
   const dispatch = useAppDispatch();
+
+  const streetViewRef = useRef();
 
   useEffect(() => {
     dispatch(getPropertyTypes());
     dispatch(getKeywordsRulesList());
   }, []);
+
+  const onload = (marker) => {
+    console.log("marker", marker);
+  };
+
+  const handleEmptyStreetViewCords = () => {
+    console.log("hello");
+    dispatch(openStreetView(null));
+  };
 
   return (
     <div className="app-container">
@@ -40,7 +59,12 @@ export const PropertySearch = () => {
           <PropertyCards />
         </Col>
         <Col span={12}>
-          <MapComponent></MapComponent>
+          <MapComponent>
+            {properties?.map((prop) => (
+              <MarkerPopover propertyData={prop} />
+            ))}
+            {streetViewCords && <StreetViewPanorama visible={true} onCloseClick={handleEmptyStreetViewCords} options={{ position: streetViewCords, enableCloseButton: true }} />}
+          </MapComponent>
         </Col>
       </Row>
     </div>

@@ -8,12 +8,18 @@ const initialState = {
   propertyTypes: [],
   properties: [],
   keywordsRulesList: [],
+  streetViewCords: null,
 };
 
 export const slice = createSlice({
   name: "propertySearch",
   initialState,
-  reducers: {},
+  reducers: {
+    openStreetView(state, action) {
+      // ✅ This "mutating" code is okay inside of createSlice!
+      state.streetViewCords = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getPropertyTypes.fulfilled, (state, action) => {
@@ -41,5 +47,8 @@ export const selectStatus = (state) => state.propertySearch.status === "loading"
 export const selectPropertyTypes = (state) => state.propertySearch.propertyTypes;
 export const selectProperties = (state) => state.propertySearch.properties;
 export const selectKeywordsRulesList = (state) => state.propertySearch.keywordsRulesList;
+export const selectStreetViewCords = (state) => state.propertySearch.streetViewCords;
+
+export const { openStreetView } = slice.actions;
 
 export default slice.reducer;

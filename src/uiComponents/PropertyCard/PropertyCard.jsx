@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from "react";
 
 import { Card, Badge, Carousel, Tooltip, Divider, Space } from "antd";
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from "@ant-design/icons";
+import { HeartOutlined } from "@ant-design/icons";
 import "./_propertyCard.scss";
 import { findIcon, getTagText } from "../../helpers/helpers";
 import { PropertyModal } from "../../appComponents/PropertyModal/PropertyModal";
+import { useAppDispatch } from "../../utils/hooks";
+import { openStreetView } from "../../pages/PropertySearch/slice";
 
 export const PropertyCard = (props) => {
   const { propertyData, type } = props;
-  const { category, extra, bedrooms, source, calc_posted, reduced, keywords } = propertyData;
+  const { category, extra, bedrooms, source, calc_posted, reduced, keywords, latitude, longitude } = propertyData;
   const { title, images, price_history, prop_address } = extra;
 
   const [showModal, setShowModal] = useState(false);
 
+  const dispatch = useAppDispatch();
+
   const handleOpenPropertyModal = () => {
     setShowModal(true);
+  };
+  const handleOpenStreetView = () => {
+    dispatch(openStreetView({ lat: latitude, lng: longitude }));
   };
 
   return (
@@ -40,8 +47,10 @@ export const PropertyCard = (props) => {
           </>
         }
         actions={[
-          <SettingOutlined key="setting" />,
-          <i className="fas fa-street-view" key={"street-view"}></i>,
+          <HeartOutlined key={"favourite"} />,
+          <span onClick={handleOpenStreetView}>
+            <i className="fas fa-street-view" key={"street-view"}></i>
+          </span>,
           <Tooltip title="View more details">
             <span onClick={() => handleOpenPropertyModal()}>
               <i className="fas fa-expand-arrows-alt"></i>
