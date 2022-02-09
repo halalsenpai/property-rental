@@ -9,6 +9,7 @@ const initialState = {
   properties: [],
   keywordsRulesList: [],
   streetViewCords: null,
+  sortBy: null,
 };
 
 export const slice = createSlice({
@@ -18,6 +19,9 @@ export const slice = createSlice({
     openStreetView(state, action) {
       // ✅ This "mutating" code is okay inside of createSlice!
       state.streetViewCords = action.payload;
+    },
+    sortBy(state, action) {
+      state.sortBy = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -48,7 +52,8 @@ export const selectPropertyTypes = (state) => state.propertySearch.propertyTypes
 export const selectProperties = (state) => state.propertySearch.properties;
 export const selectKeywordsRulesList = (state) => state.propertySearch.keywordsRulesList;
 export const selectStreetViewCords = (state) => state.propertySearch.streetViewCords;
+export const selectSortBy = (state) => state.propertySearch.sortBy;
 
-export const { openStreetView } = slice.actions;
+export const { openStreetView, sortBy } = slice.actions;
 
 export default slice.reducer;

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Form, Select, Row, Col, Slider, InputNumber, Switch, Button } from "antd";
 import { useAppDispatch, useAppSelector } from "../../utils/hooks";
-import { selectKeywordsRulesList, selectPropertyTypes } from "../../pages/PropertySearch/slice";
+import { selectKeywordsRulesList, selectPropertyTypes, selectSortBy } from "../../pages/PropertySearch/slice";
 import { cleanObject, jsonToQueryString } from "../../helpers/helpers";
 import * as queryString from "query-string";
 import { getProperties } from "../../pages/PropertySearch/thunk";
+import { useForm } from "antd/lib/form/Form";
+
 const { Option } = Select;
 
 export const Filter = ({ setActivePanel }) => {
@@ -14,9 +16,11 @@ export const Filter = ({ setActivePanel }) => {
   const [excludeTagsList, setExcludeTagsList] = useState([]);
 
   const dispatch = useAppDispatch();
+  const [form] = useForm();
 
   const propertyTypes = useAppSelector(selectPropertyTypes);
   const keywordsRulesList = useAppSelector(selectKeywordsRulesList);
+  const sortBy = useAppSelector(selectSortBy);
 
   useEffect(() => {
     console.log(includeTagsList);
@@ -34,6 +38,9 @@ export const Filter = ({ setActivePanel }) => {
     allValues.category && setCategory(allValues.category);
   }
   const handleFormSubmit = (values) => {
+    if (sortBy) {
+      values.sorting = sortBy;
+    }
     console.log("the values", values);
     let payload = cleanObject(values);
     payload.limit = 50;
@@ -45,12 +52,19 @@ export const Filter = ({ setActivePanel }) => {
     dispatch(getProperties({ params: _payload }));
   };
 
+  useEffect(() => {
+    if (sortBy) {
+      form.submit();
+    }
+  }, [sortBy]);
+
   return (
     <div className="">
       <div className="card-body">
         <h5 className="card-title">Customize search parameters</h5>
         <p className="card-text"></p>
         <Form
+          form={form}
           initialValues={{
             reduced: false,
             for_sale_and_rent: false,
@@ -203,8 +217,11 @@ export const Filter = ({ setActivePanel }) => {
             </Col>
           </Row>
           <div className="d-flex justify-content-end">
+            <button type="button" onClick={() => form.resetFields()} className="btn btn-danger me-2">
+              Clear Filter
+            </button>
             <button type="submit" className="btn btn-primary">
-              Submit
+              Search
             </button>
           </div>
         </Form>

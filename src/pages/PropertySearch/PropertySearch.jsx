@@ -9,11 +9,12 @@ import { Card } from "../../uiComponents/Card/Card";
 import { MarkerPopover } from "../../uiComponents/MarkerPopover/MarkerPopover";
 import { PropertyCard } from "../../uiComponents/PropertyCard/PropertyCard";
 import { useAppDispatch, useAppSelector } from "../../utils/hooks";
-import { openStreetView, selectProperties, selectStreetViewCords } from "./slice";
+import { openStreetView, selectProperties, selectStreetViewCords, sortBy } from "./slice";
 import { getKeywordsRulesList, getProperties, getPropertyTypes } from "./thunk";
 import "./_propertySearch.scss";
 
 const { Panel } = Collapse;
+const { Option } = Select;
 
 export const PropertySearch = () => {
   const [activePanel, setActivePanel] = useState(null);
@@ -31,11 +32,11 @@ export const PropertySearch = () => {
   }, []);
 
   const onload = (marker) => {
-    console.log("marker", marker);
+    // console.log("marker", marker);
   };
 
   const handleEmptyStreetViewCords = () => {
-    console.log("hello");
+    // console.log("hello");
     dispatch(openStreetView(null));
   };
 
@@ -53,7 +54,36 @@ export const PropertySearch = () => {
             </Panel>
           </Collapse>
           <div className="menu-bar d-flex justify-content-end align-items-center" style={{ marginTop: "24px", paddingInline: "24px" }}>
-            <Select style={{ width: "200px" }} placeholder={"Sort by"}></Select>
+            <Select style={{ width: "200px" }} placeholder={"Sort by"} allowClear onSelect={(v) => dispatch(sortBy(v))}>
+              <Option value="price">Price</Option>
+              <Option label="Price Descending" value="price_desc">
+                Price Descending
+              </Option>
+              <Option label="Negative Equity" value="negative_equity">
+                Negative Equity
+              </Option>
+              <Option label="Negative Equity Descending" value="negative_equity_desc">
+                Negative Equity Descending
+              </Option>
+              <Option label="Time On Market" value="time_on_market">
+                Time On Market
+              </Option>
+              <Option label="Time On Market Descending" value="time_on_market_desc">
+                Time On Market Descending
+              </Option>
+              <Option label="Bedrooms" value="bedrooms">
+                Bedrooms
+              </Option>
+              <Option label="Bedrooms Descending" value="bedrooms_desc">
+                Bedrooms Descending
+              </Option>
+              <Option label="Reduced" value="reduced">
+                Reduced
+              </Option>
+              <Option label="Reduced Descending" value="reduced_desc">
+                Reduced Descending
+              </Option>
+            </Select>
           </div>
           <Divider />
           <PropertyCards />
