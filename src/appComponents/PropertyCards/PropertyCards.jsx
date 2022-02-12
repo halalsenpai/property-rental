@@ -1,4 +1,4 @@
-import { Col, Row } from "antd";
+import { Col, Empty, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import { selectProperties } from "../../pages/PropertySearch/slice";
 import { getProperties } from "../../pages/PropertySearch/thunk";
@@ -6,22 +6,23 @@ import { PropertyCard } from "../../uiComponents/PropertyCard/PropertyCard";
 import { useAppDispatch, useAppSelector } from "../../utils/hooks";
 import "./_propertyCards.scss";
 
-export const PropertyCards = () => {
+export const PropertyCards = (props) => {
   const [filterParams, setFilterParams] = useState(null);
   const dispatch = useAppDispatch();
 
   const properties = useAppSelector(selectProperties);
 
-  useEffect(() => {
-    dispatch(getProperties({ params: "limit=5" }));
-  }, []);
-
   // useEffect(() => {
-  //   if (modalData) {
-  //     setShowModal(true);
-  //   }
-  //   console.log("modaldata", modalData);
-  // }, [modalData]);
+  //   dispatch(getProperties({ params: "limit=5" }));
+  // }, []);
+
+  if (!properties.length) {
+    props.setActivePanel(1);
+    return <Empty description={"Search for Properties using the filters"} />;
+  }
+  if (properties.length) {
+    props.setActivePanel(null);
+  }
 
   return (
     <div className="property-cards-container container">

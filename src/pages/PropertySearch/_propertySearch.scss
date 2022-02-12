@@ -6,6 +6,10 @@
     flex-direction: column;
     height: calc(100vh - 56px);
     overflow-y: hidden;
+    .property-card-spinner {
+      height: auto;
+      overflow-y: auto;
+    }
   }
   .ant-collapse {
     position: relative;

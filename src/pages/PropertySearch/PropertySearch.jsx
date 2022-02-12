@@ -1,15 +1,14 @@
 import { InfoBox, InfoWindow, Marker, MarkerClusterer, StreetViewPanorama, StreetViewService } from "@react-google-maps/api";
-import { Col, Divider, Layout, Row, Select, Slider, Collapse, Popover, Tooltip } from "antd";
+import { Col, Divider, Layout, Row, Select, Slider, Collapse, Popover, Tooltip, Spin } from "antd";
 import React, { memo, useEffect, useState } from "react";
 import { useRef } from "react";
 import { Filter } from "../../appComponents/Filter.jsx/Filter";
-import MapComponent from "../../appComponents/MapComponent/MapComponent";
 import { PropertyCards } from "../../appComponents/PropertyCards/PropertyCards";
-import { Card } from "../../uiComponents/Card/Card";
+import { MapComponent } from "../../appComponents/MapComponent/MapComponent";
 import { MarkerPopover } from "../../uiComponents/MarkerPopover/MarkerPopover";
 import { PropertyCard } from "../../uiComponents/PropertyCard/PropertyCard";
 import { useAppDispatch, useAppSelector } from "../../utils/hooks";
-import { openStreetView, selectProperties, selectStreetViewCords, sortBy } from "./slice";
+import { openStreetView, selectProperties, selectStatus, selectStreetViewCords, sortBy } from "./slice";
 import { getKeywordsRulesList, getProperties, getPropertyTypes } from "./thunk";
 import "./_propertySearch.scss";
 
@@ -23,6 +22,7 @@ export const PropertySearch = () => {
 
   const properties = useAppSelector(selectProperties);
   const streetViewCords = useAppSelector(selectStreetViewCords);
+  const isLoading = useAppSelector(selectStatus);
 
   const dispatch = useAppDispatch();
 
@@ -55,7 +55,7 @@ export const PropertySearch = () => {
             </Panel>
           </Collapse>
           <div className="menu-bar d-flex justify-content-end align-items-center" style={{ marginTop: "24px", paddingInline: "24px" }}>
-            <Select style={{ width: "200px" }} placeholder={"Sort by"} allowClear onSelect={(v) => dispatch(sortBy(v))}>
+            <Select style={{ width: "200px" }} placeholder={"Sort by"} allowClear onChange={(v) => dispatch(sortBy(v))}>
               <Option value="price">Price</Option>
               <Option label="Price Descending" value="price_desc">
                 Price Descending
@@ -87,11 +87,14 @@ export const PropertySearch = () => {
             </Select>
           </div>
           <Divider />
-          <PropertyCards />
+          <Spin wrapperClassName={"property-card-spinner"} spinning={isLoading}>
+            {" "}
+            <PropertyCards setActivePanel={setActivePanel} />
+          </Spin>
         </Col>
         <Col span={12}>
           <MapComponent>
-            <MarkerClusterer>
+            <MarkerClusterer options={{ maxZoom: 12 }}>
               {(clusterer) =>
                 properties.map((prop) => (
                   <MarkerPopover setPropetyCardData={setPropetyCardData} onClick={() => console.log("i was click")} clusterer={clusterer} propertyData={prop} />
@@ -100,6 +103,7 @@ export const PropertySearch = () => {
             </MarkerClusterer>
             {propetyCardData && (
               <InfoWindow
+                onCloseClick={() => setPropetyCardData(null)}
                 options={{ closeBoxURL: "", enableEventPropagation: true, disableAutoPan: false }}
                 position={{ lat: propetyCardData.latitude, lng: propetyCardData.longitude }}>
                 <div className="propertyData-card" style={{ width: "300px" }}>

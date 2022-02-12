@@ -47,7 +47,7 @@ export const Filter = ({ setActivePanel }) => {
     delete payload.reduced;
     payload.reduced_max = 100;
     const _payload = queryString.stringify(payload);
-    setActivePanel(null);
+    // setActivePanel(null);
 
     dispatch(getProperties({ params: _payload }));
   };
