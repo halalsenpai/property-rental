@@ -22,7 +22,7 @@ const MapComponent = (props) => {
         onLoad={onLoad}
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={10}>
+        zoom={1}>
         {/* Child components, such as markers, info windows, etc. */}
         <>{props.children}</>
       </GoogleMap>
