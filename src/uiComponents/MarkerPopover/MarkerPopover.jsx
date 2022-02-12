@@ -1,4 +1,4 @@
-import { InfoBox, InfoWindow, Marker } from "@react-google-maps/api";
+import { InfoBox, InfoWindow, Marker, MarkerClusterer } from "@react-google-maps/api";
 import { Popover, Tooltip } from "antd";
 import React, { useState } from "react";
 import { PropertyCard } from "../PropertyCard/PropertyCard";
@@ -8,13 +8,16 @@ export const MarkerPopover = (props) => {
   const { propertyData } = props;
   return (
     <>
-      <Marker onClick={() => setcardVisible(true)} options={{ title: "test" }} position={{ lat: propertyData.latitude, lng: propertyData.longitude }}>
+      <Marker onClick={() => setcardVisible(!cardVisible)} options={{ title: "test" }} position={{ lat: propertyData.latitude, lng: propertyData.longitude }}>
         {cardVisible && (
-          <InfoBox options={{ closeBoxURL: "", enableEventPropagation: true }} position={{ lat: propertyData.latitude, lng: propertyData.longitude }}>
-            <PropertyCard propertyData={propertyData} />
-          </InfoBox>
+          <InfoWindow options={{ closeBoxURL: "", enableEventPropagation: true, disableAutoPan: false }} position={{ lat: propertyData.latitude, lng: propertyData.longitude }}>
+            <div className="prop-card" style={{ width: "300px" }}>
+              <PropertyCard propertyData={propertyData} />
+            </div>
+          </InfoWindow>
         )}
       </Marker>
+
     </>
   );
 };
