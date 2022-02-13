@@ -20,9 +20,9 @@ export const PropertyCards = (props) => {
     props.setActivePanel(1);
     return <Empty description={"Search for Properties using the filters"} />;
   }
-  if (properties.length) {
-    props.setActivePanel(null);
-  }
+  // if (properties.length) {
+  //   props.setActivePanel(1);
+  // }
 
   return (
     <div className="property-cards-container container">

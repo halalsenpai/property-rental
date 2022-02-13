@@ -3,8 +3,8 @@ import { Col, Divider, Layout, Row, Select, Slider, Collapse, Popover, Tooltip, 
 import React, { memo, useEffect, useState } from "react";
 import { useRef } from "react";
 import { Filter } from "../../appComponents/Filter.jsx/Filter";
+import MapComponent from "../../appComponents/MapComponent/MapComponent";
 import { PropertyCards } from "../../appComponents/PropertyCards/PropertyCards";
-import { MapComponent } from "../../appComponents/MapComponent/MapComponent";
 import { MarkerPopover } from "../../uiComponents/MarkerPopover/MarkerPopover";
 import { PropertyCard } from "../../uiComponents/PropertyCard/PropertyCard";
 import { useAppDispatch, useAppSelector } from "../../utils/hooks";

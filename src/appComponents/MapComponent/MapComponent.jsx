@@ -1,6 +1,5 @@
-import React, { useCallback, useState } from "react";
-import { GoogleMap, useLoadScript } from "@react-google-maps/api";
-import { Spin } from "antd";
+import React, { memo, useCallback, useState } from "react";
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
 
 const containerStyle = {
   width: "100%",
@@ -12,39 +11,32 @@ const center = {
   lng: -0.12632193087922333,
 };
 
-export const MapComponent = (props) => {
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: "AIzaSyAxfn5nn1AZl1aVNbZyqm6FoSizrczwalw", // ,
-    // ...otherOptions
+const MapComponent = (props) => {
+  const [map, setMap] = useState(null);
+  const onLoad = useCallback(function onLoad(mapInstance) {
+    console.log(mapInstance);
+    setMap(mapInstance);
   });
 
-  const RenderMap = () => {
-    const [map, setMap] = useState(null);
-    const [bounds, setBounds] = useState(null);
-    const onLoad = useCallback(function onLoad(mapInstance) {
-      console.log(mapInstance);
-      setMap(mapInstance);
-    });
-    const handleBoundsChange = () => {
-      let b = map.getBounds();
-      let bounds = { ne: b.getNorthEast(), sw: b.getSouthWest() };
-      console.log("Map Bounds: ", JSON.stringify(bounds));
-    };
-    return (
+  const handleBoundsChange = () => {
+    let b = map.getBounds();
+    let bounds = { ne: b.getNorthEast(), sw: b.getSouthWest() };
+    console.log("Map Bounds: ", JSON.stringify(bounds));
+  };
+  return (
+    <LoadScript googleMapsApiKey="AIzaSyAxfn5nn1AZl1aVNbZyqm6FoSizrczwalw">
       <GoogleMap
-        onBoundsChanged={handleBoundsChange}
         options={{ restriction: { strictBounds: true, latLngBounds: { north: 58, south: 49.9, west: -7, east: 3 } } }}
         onLoad={onLoad}
+        onBoundsChanged={handleBoundsChange}
         mapContainerStyle={containerStyle}
         center={center}
         zoom={1}>
-        {props.children}
+        {/* Child components, such as markers, info windows, etc. */}
+        <>{props.children}</>
       </GoogleMap>
-    );
-  };
-
-  if (loadError) {
-    return <div>Map cannot be loaded right now, sorry.</div>;
-  }
-  return isLoaded ? <RenderMap /> : <Spin spinning={true} />;
+    </LoadScript>
+  );
 };
+
+export default memo(MapComponent);
