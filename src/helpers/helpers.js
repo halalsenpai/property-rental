@@ -90,3 +90,18 @@ export const getTagText = (keyword) => {
 export const cleanObject = (obj) => {
   return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null));
 };
+
+if (typeof Number.prototype.toRad === "undefined") {
+  Number.prototype.toRad = function () {
+    return (this * Math.PI) / 180;
+  };
+}
+
+export const getTileURL = (lat, lon, zoom) => {
+  console.log("latitidue", lat);
+  var xtile = parseInt(Math.floor(((lon + 180) / 360) * (1 << zoom)));
+  var ytile = parseInt(Math.floor(((1 - Math.log(Math.tan((lat * Math.PI) / 180) + 1 / Math.cos((lat * Math.PI) / 180)) / Math.PI) / 2) * (1 << zoom)));
+  console.log(zoom + "/" + xtile + "/" + ytile);
+
+  return zoom + "/" + xtile + "/" + ytile;
+};

@@ -1,7 +1,7 @@
 import { createSlice, isPending, isRejected } from "@reduxjs/toolkit";
-import { getKeywordsRulesList, getProperties, getPropertyTypes } from "./thunk";
+import { getKeywordsRulesList, getLandBounds, getProperties, getPropertyTypes } from "./thunk";
 
-const thunks = [getPropertyTypes, getProperties, getKeywordsRulesList];
+const thunks = [getPropertyTypes, getProperties, getKeywordsRulesList, getLandBounds];
 
 const initialState = {
   status: "idle",
@@ -10,6 +10,7 @@ const initialState = {
   keywordsRulesList: [],
   streetViewCords: null,
   sortBy: null,
+  landBounds: [],
 };
 
 export const slice = createSlice({
@@ -38,6 +39,10 @@ export const slice = createSlice({
         state.status = "idle";
         state.keywordsRulesList = action.payload;
       })
+      .addCase(getLandBounds.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.landBounds = action.payload;
+      })
       .addMatcher(isPending(...thunks), (state) => {
         state.status = "loading";
       })
@@ -51,6 +56,7 @@ export const selectStatus = (state) => state.propertySearch.status === "loading"
 export const selectPropertyTypes = (state) => state.propertySearch.propertyTypes;
 export const selectProperties = (state) => state.propertySearch.properties;
 export const selectKeywordsRulesList = (state) => state.propertySearch.keywordsRulesList;
+export const selectLandBounds = (state) => state.propertySearch.landBounds;
 export const selectStreetViewCords = (state) => state.propertySearch.streetViewCords;
 export const selectSortBy = (state) => state.propertySearch.sortBy;
 
