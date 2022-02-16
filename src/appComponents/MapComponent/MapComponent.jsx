@@ -36,7 +36,7 @@ const MapComponent = (props) => {
     const coords = getTileURL(center.lat(), center.lng(), zoom);
     dispatch(getLandBounds(coords));
   };
-  const debouncedHandleBoundsChange = useCallback(debounce(handleBoundsChange, 500));
+  const debouncedHandleBoundsChange = useCallback(debounce(handleBoundsChange, 2000));
   return (
     <LoadScript googleMapsApiKey="AIzaSyAxfn5nn1AZl1aVNbZyqm6FoSizrczwalw">
       <GoogleMap
