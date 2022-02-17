@@ -111,7 +111,6 @@ export const Filter = ({ setActivePanel }) => {
                   placeholder={"Select number of rooms"}
                   style={{ width: "100%" }}
                   onChange={handleChange}>
-                  <Option value="2/3/4/5/6/7/8/9/10">2/3/4/5/6/7/8/9/10</Option>
                   <Option value="studio">Studio</Option>
                   <Option value="1">1</Option>
                   <Option value="2">2</Option>
@@ -198,7 +197,7 @@ export const Filter = ({ setActivePanel }) => {
                 <Select mode="multiple" style={{ width: "100%" }} placeholder="Select tags" onChange={handleChange(setIncludeTagsList)}>
                   {keywordsRulesList?.map((keyword, i) => (
                     <Option disabled={excludeTagsList.includes(keyword.keyword)} key={i} value={keyword.keyword}>
-                      {keyword.keyword}
+                      {keyword.keyword.replaceAll("_", " ")}
                     </Option>
                   ))}
                 </Select>
@@ -209,7 +208,7 @@ export const Filter = ({ setActivePanel }) => {
                 <Select mode="multiple" style={{ width: "100%" }} placeholder="Select tags to exclude" onChange={handleChange(setExcludeTagsList)}>
                   {keywordsRulesList?.map((keyword, i) => (
                     <Option disabled={includeTagsList.includes(keyword.keyword)} key={i} value={keyword.keyword}>
-                      {keyword.keyword}
+                      {keyword.keyword.replaceAll("_", " ")}
                     </Option>
                   ))}
                 </Select>

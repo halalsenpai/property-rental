@@ -1,7 +1,7 @@
 import { createSlice, isPending, isRejected } from "@reduxjs/toolkit";
 import { getKeywordsRulesList, getLandBounds, getProperties, getPropertyTypes } from "./thunk";
 
-const thunks = [getPropertyTypes, getProperties, getKeywordsRulesList, getLandBounds];
+const thunks = [getPropertyTypes, getKeywordsRulesList, getLandBounds];
 
 const initialState = {
   status: "idle",
@@ -11,6 +11,7 @@ const initialState = {
   streetViewCords: null,
   sortBy: null,
   landBounds: [],
+  propLoading: false,
 };
 
 export const slice = createSlice({
@@ -31,9 +32,16 @@ export const slice = createSlice({
         state.status = "idle";
         state.propertyTypes = action.payload;
       })
+      .addCase(getProperties.pending, (state) => {
+        state.propLoading = true;
+      })
       .addCase(getProperties.fulfilled, (state, action) => {
         state.status = "idle";
+        state.propLoading = false;
         state.properties = action.payload;
+      })
+      .addCase(getProperties.rejected, (state) => {
+        state.status = "failed";
       })
       .addCase(getKeywordsRulesList.fulfilled, (state, action) => {
         state.status = "idle";
@@ -59,6 +67,7 @@ export const selectKeywordsRulesList = (state) => state.propertySearch.keywordsR
 export const selectLandBounds = (state) => state.propertySearch.landBounds;
 export const selectStreetViewCords = (state) => state.propertySearch.streetViewCords;
 export const selectSortBy = (state) => state.propertySearch.sortBy;
+export const selectPropertyLoading = (state) => state.propertySearch.propLoading;
 
 export const { openStreetView, sortBy } = slice.actions;
 

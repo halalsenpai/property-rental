@@ -60,7 +60,7 @@ export const PropertyCard = (props) => {
         {" "}
         <div className="d-flex justify-content-between all-text-muted">
           <span>category</span>
-          <span>{category}</span>
+          <span>{category.replaceAll("-", " ")}</span>
         </div>
         <Divider dashed />
         <div className="d-flex justify-content-between all-text-muted">

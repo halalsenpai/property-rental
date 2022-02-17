@@ -8,7 +8,7 @@ import { PropertyCards } from "../../appComponents/PropertyCards/PropertyCards";
 import { MarkerPopover } from "../../uiComponents/MarkerPopover/MarkerPopover";
 import { PropertyCard } from "../../uiComponents/PropertyCard/PropertyCard";
 import { useAppDispatch, useAppSelector } from "../../utils/hooks";
-import { openStreetView, selectProperties, selectStatus, selectStreetViewCords, sortBy } from "./slice";
+import { openStreetView, selectProperties, selectPropertyLoading, selectStatus, selectStreetViewCords, sortBy } from "./slice";
 import { getKeywordsRulesList, getProperties, getPropertyTypes } from "./thunk";
 import "./_propertySearch.scss";
 
@@ -22,7 +22,7 @@ export const PropertySearch = () => {
 
   const properties = useAppSelector(selectProperties);
   const streetViewCords = useAppSelector(selectStreetViewCords);
-  const isLoading = useAppSelector(selectStatus);
+  const isLoading = useAppSelector(selectPropertyLoading);
 
   const dispatch = useAppDispatch();
 
