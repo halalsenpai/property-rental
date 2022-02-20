@@ -15,7 +15,8 @@ export const getPropertyTypes = createAsyncThunk("propertySearch/get-property-ty
 
 export const getProperties = createAsyncThunk("propertySearch/get-propeties", async ({ params }) => {
   const response = await getPropertiesAPI(params);
-  return response.data;
+  console.log("response", response);
+  return response;
 });
 
 export const getKeywordsRulesList = createAsyncThunk("propertySearch/get-keyword-rules-list", async () => {

@@ -19,7 +19,7 @@ export const PropertyModal = (props) => {
     <Modal width={1000} title="Property Details" visible={showModal} onOk={handleOk} onCancel={handleCancel}>
       <div className="d-flex justify-content-between all-text-muted">
         <span>Listed Date</span>
-        <span>{calc_posted}</span>
+        <span>{calc_posted.split("-").reverse().join("-")}</span>
       </div>
       <Divider dashed />
       <Descriptions title={"Property Info"} bordered>
@@ -75,7 +75,7 @@ export const PropertyModal = (props) => {
                 price_history.map((item, i) => (
                   <div className="d-flex justify-content-between all-text-muted">
                     <span>{item.date}</span>
-                    <span>{item.price}</span>
+                    <span>{item.price}€</span>
                   </div>
                 ))}
             </Descriptions.Item>

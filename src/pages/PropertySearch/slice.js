@@ -12,6 +12,7 @@ const initialState = {
   sortBy: null,
   landBounds: [],
   propLoading: false,
+  propertiesMeta: null,
 };
 
 export const slice = createSlice({
@@ -24,6 +25,9 @@ export const slice = createSlice({
     },
     sortBy(state, action) {
       state.sortBy = action.payload;
+    },
+    clearPropertyList(state) {
+      state.properties = [];
     },
   },
   extraReducers: (builder) => {
@@ -38,7 +42,8 @@ export const slice = createSlice({
       .addCase(getProperties.fulfilled, (state, action) => {
         state.status = "idle";
         state.propLoading = false;
-        state.properties = action.payload;
+        state.propertiesMeta = action.payload.meta;
+        state.properties = action.payload.data;
       })
       .addCase(getProperties.rejected, (state) => {
         state.status = "failed";
@@ -68,7 +73,8 @@ export const selectLandBounds = (state) => state.propertySearch.landBounds;
 export const selectStreetViewCords = (state) => state.propertySearch.streetViewCords;
 export const selectSortBy = (state) => state.propertySearch.sortBy;
 export const selectPropertyLoading = (state) => state.propertySearch.propLoading;
+export const selectPropertyListMeta = (state) => state.propertySearch.propertiesMeta;
 
-export const { openStreetView, sortBy } = slice.actions;
+export const { openStreetView, sortBy, clearPropertyList } = slice.actions;
 
 export default slice.reducer;

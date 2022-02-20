@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Select, Row, Col, Slider, InputNumber, Switch, Button } from "antd";
 import { useAppDispatch, useAppSelector } from "../../utils/hooks";
-import { selectKeywordsRulesList, selectPropertyTypes, selectSortBy } from "../../pages/PropertySearch/slice";
+import { clearPropertyList, selectKeywordsRulesList, selectPropertyTypes, selectSortBy } from "../../pages/PropertySearch/slice";
 import { cleanObject, jsonToQueryString } from "../../helpers/helpers";
 import * as queryString from "query-string";
 import { getProperties } from "../../pages/PropertySearch/thunk";
@@ -9,7 +9,7 @@ import { useForm } from "antd/lib/form/Form";
 
 const { Option } = Select;
 
-export const Filter = ({ setActivePanel }) => {
+export const Filter = ({ setActivePanel, setPayloadPropSearch, setPropertyList }) => {
   const [category, setCategory] = useState(null);
   const [timeOnMarket, setTimeOnMarket] = useState([0, 0]);
   const [includeTagsList, setIncludeTagsList] = useState([]);
@@ -38,19 +38,31 @@ export const Filter = ({ setActivePanel }) => {
     allValues.category && setCategory(allValues.category);
   }
   const handleFormSubmit = (values) => {
+    dispatch(clearPropertyList());
+    setPropertyList([]);
     if (sortBy) {
       values.sorting = sortBy;
     }
     console.log("the values", values);
     let payload = cleanObject(values);
-    payload.limit = 50;
+    payload.limit = 20;
     delete payload.reduced;
     payload.reduced_max = 100;
+    payload.time_on_market_min = timeOnMarket[0];
+    payload.time_on_market_max = timeOnMarket[1];
     const _payload = queryString.stringify(payload);
     // setActivePanel(null);
 
+    setPayloadPropSearch(payload);
     dispatch(getProperties({ params: _payload }));
   };
+  function formatter(value) {
+    if (value == 13) {
+      return `∞`;
+    } else {
+      return value;
+    }
+  }
 
   useEffect(() => {
     if (sortBy) {
@@ -123,6 +135,7 @@ export const Filter = ({ setActivePanel }) => {
             <Col span={24} xs={24} sm={24} md={24} lg={12}>
               <Form.Item label={"Time On Market (months)"} name={"timeOnMarket"}>
                 <Slider
+                  tipFormatter={formatter}
                   disabled={!["property-for-sale", "property-to-rent"].includes(category)}
                   draggableTrack
                   range
@@ -144,6 +157,7 @@ export const Filter = ({ setActivePanel }) => {
                   }}
                 />
                 <InputNumber
+                  formatter={formatter}
                   disabled={!["property-for-sale", "property-to-rent"].includes(category)}
                   min={timeOnMarket[0]}
                   max={13}

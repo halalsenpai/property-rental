@@ -34,15 +34,15 @@ const MapComponent = (props) => {
     let zoom = map.getZoom();
     console.log("zoom", zoom);
     const coords = getTileURL(center.lat(), center.lng(), zoom);
-    dispatch(getLandBounds(coords));
+    // dispatch(getLandBounds(coords));
   };
-  const debouncedHandleBoundsChange = useCallback(debounce(handleBoundsChange, 2000));
+  // const debouncedHandleBoundsChange = useCallback(debounce(handleBoundsChange, 2000));
   return (
     <LoadScript googleMapsApiKey="AIzaSyAxfn5nn1AZl1aVNbZyqm6FoSizrczwalw">
       <GoogleMap
         options={{ restriction: { strictBounds: true, latLngBounds: { north: 58, south: 49.9, west: -7, east: 3 } } }}
         onLoad={onLoad}
-        onBoundsChanged={debouncedHandleBoundsChange}
+        // onBoundsChanged={debouncedHandleBoundsChange}
         mapContainerStyle={containerStyle}
         center={center}
         zoom={1}>

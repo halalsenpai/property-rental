@@ -5,9 +5,15 @@
   .tag-div {
     position: absolute;
     display: flex;
+    flex-direction: row;
     padding: 4px;
     justify-content: end;
     z-index: 1;
+    flex-wrap: wrap;
+    span {
+      margin-inline: 1px;
+      margin-bottom: 2px;
+    }
     .ant-badge {
       position: relative;
       .ant-badge-count {
