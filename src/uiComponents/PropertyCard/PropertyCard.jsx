@@ -56,7 +56,7 @@ export const PropertyCard = (props) => {
           <>
             <div className="tag-div">
               <span>{reduced !== null && <Badge style={{ backgroundColor: "#52c41a" }} count={`Reduced: ${reduced.toFixed(0)}%`} />}</span>
-              <span>{multi_agents.length && <Badge style={{ backgroundColor: "#52c41a" }} count={`Multi Agents`} />}</span>
+              <span>{multi_agents?.length && <Badge style={{ backgroundColor: "#52c41a" }} count={`Multi Agents`} />}</span>
               <span>{resale !== false && <Badge style={{ backgroundColor: "#52c41a" }} count={`Resale`} />}</span>
               <span>{under_offer !== false && <Badge style={{ backgroundColor: "#52c41a" }} count={`Under Offer`} />}</span>
               <span>{sold !== false && <Badge style={{ backgroundColor: "#52c41a" }} count={`Sold`} />}</span>
