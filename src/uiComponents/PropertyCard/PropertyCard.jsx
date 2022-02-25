@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Badge, Carousel, Tooltip, Divider, Space } from "antd";
 import { HeartOutlined } from "@ant-design/icons";
 import "./_propertyCard.scss";
-import { findIcon, getTagText } from "../../helpers/helpers";
+import { findIcon, getTagText, titleCase } from "../../helpers/helpers";
 import { PropertyModal } from "../../appComponents/PropertyModal/PropertyModal";
 import { useAppDispatch } from "../../utils/hooks";
 import { openStreetView } from "../../pages/PropertySearch/slice";
@@ -50,7 +50,11 @@ export const PropertyCard = (props) => {
       {/* If the client has future plans to have featured cards */}
       {/* <Badge.Ribbon text={"reduced"} color={"green"}> */}
       <Card
-        title={<span title={title}>{title}</span>}
+        title={
+          <a target="_blank" className="text-black" href={url} title={title}>
+            {title}
+          </a>
+        }
         extra={<div style={{ zIndex: "22" }}></div>}
         cover={
           <>
@@ -64,7 +68,7 @@ export const PropertyCard = (props) => {
               <span>{cross_similar !== false && <Badge style={{ backgroundColor: "#52c41a" }} count={`Cross Similar`} />}</span>
               <span>{negative_equity !== null && <Badge style={{ backgroundColor: "#52c41a" }} count={`Negative Price`} />}</span>
             </div>
-            <Carousel>
+            <Carousel arrows={true}>
               {images &&
                 images.split(";").map((img, i) => (
                   <div key={i}>
@@ -91,17 +95,17 @@ export const PropertyCard = (props) => {
         ]}>
         {" "}
         <div className="d-flex justify-content-between all-text-muted">
-          <span>category</span>
-          <span>{category.replaceAll("-", " ")}</span>
+          <span>Category</span>
+          <span>{titleCase(category.replaceAll("-", " "))}</span>
         </div>
         <Divider dashed />
         <div className="d-flex justify-content-between all-text-muted">
-          <span>bedrooms</span>
+          <span>Bedrooms</span>
           <span>{bedrooms}</span>
         </div>
         <Divider dashed />
         <div className="d-flex justify-content-between all-text-muted">
-          <span>price</span>
+          <span>Price</span>
           <span>{price_history[0]?.price}</span>
         </div>
         <Divider dashed />
@@ -114,12 +118,12 @@ export const PropertyCard = (props) => {
         </div>
         <Divider dashed />
         <div className="d-flex justify-content-between all-text-muted">
-          <span>source</span>
+          <span>Source</span>
           <span>{source}</span>
         </div>
         <Divider dashed />
         <div className="d-flex justify-content-between all-text-muted">
-          <span>posted date</span>
+          <span>Posted date</span>
           <span>{calc_posted.split("-").reverse().join("-")}</span>
         </div>
         <Divider dashed />

@@ -5,7 +5,8 @@ import { interceptor } from "./intercepter";
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_API,
   timeout: 180000,
-//   withCredentials: true,
+  // headers: { origin: "http://77.68.88.99" },
+  //   withCredentials: true,
 });
 
 //call axios interceptor

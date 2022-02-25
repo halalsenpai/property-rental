@@ -5,6 +5,8 @@ import { getTileURL } from "../../helpers/helpers";
 import { useAppDispatch } from "../../utils/hooks";
 import { getLandBounds } from "../../pages/PropertySearch/thunk";
 
+const googleLibs = ["places"];
+
 const containerStyle = {
   width: "100%",
   height: "100%",
@@ -38,7 +40,7 @@ const MapComponent = (props) => {
   };
   // const debouncedHandleBoundsChange = useCallback(debounce(handleBoundsChange, 2000));
   return (
-    <LoadScript googleMapsApiKey="AIzaSyAxfn5nn1AZl1aVNbZyqm6FoSizrczwalw">
+    <LoadScript libraries={googleLibs} googleMapsApiKey="AIzaSyAxfn5nn1AZl1aVNbZyqm6FoSizrczwalw">
       <GoogleMap
         options={{ restriction: { strictBounds: true, latLngBounds: { north: 58, south: 49.9, west: -7, east: 3 } } }}
         onLoad={onLoad}

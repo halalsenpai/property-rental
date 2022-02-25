@@ -7,10 +7,10 @@ export const Navbar = () => {
   return (
     <nav className="navbar navbar-dark bg-dark">
       <div className="container-fluid">
-        <span className="navbar-brand mb-0 h1"> Prop App </span>
+        <span className="navbar-brand mb-0 h1"> PropOpp </span>
         <div>
           <Select style={{ width: "100px", height: "38px" }} placeholder="Tool">
-            <Option>Prop App</Option>
+            <Option>PropOpp</Option>
           </Select>
           <button type="button" className="btn btn-danger ms-3">
             Logout
