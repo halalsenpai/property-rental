@@ -13,6 +13,8 @@ const initialState = {
   landBounds: [],
   propLoading: false,
   propertiesMeta: null,
+  mapInstance: null,
+  favoriteProperties: [],
 };
 
 export const slice = createSlice({
@@ -28,6 +30,18 @@ export const slice = createSlice({
     },
     clearPropertyList(state) {
       state.properties = [];
+    },
+    setMapInstance(state, action) {
+      state.mapInstance = action.payload;
+    },
+    setFavoriteProperties(state, action) {
+      const filtered = state.favoriteProperties.filter((prop) => prop.uid !== action.payload.uid);
+      state.favoriteProperties = [...filtered, action.payload];
+    },
+    removeFavoriteProperties(state, action) {
+      const splice = state.favoriteProperties.splice(state.favoriteProperties.indexOf(action.payload), 1);
+      console.log(splice);
+      state.favoriteProperties = splice;
     },
   },
   extraReducers: (builder) => {
@@ -74,7 +88,9 @@ export const selectStreetViewCords = (state) => state.propertySearch.streetViewC
 export const selectSortBy = (state) => state.propertySearch.sortBy;
 export const selectPropertyLoading = (state) => state.propertySearch.propLoading;
 export const selectPropertyListMeta = (state) => state.propertySearch.propertiesMeta;
+export const selectMapInstance = (state) => state.propertySearch.mapInstance;
+export const selectFavoriteProps = (state) => state.propertySearch.favoriteProperties;
 
-export const { openStreetView, sortBy, clearPropertyList } = slice.actions;
+export const { openStreetView, sortBy, clearPropertyList, setMapInstance, setFavoriteProperties, removeFavoriteProperties } = slice.actions;
 
 export default slice.reducer;

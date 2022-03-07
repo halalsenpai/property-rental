@@ -11,6 +11,9 @@
       overflow-y: auto;
     }
   }
+  .right-container {
+    height: calc(100vh - 56px);
+  }
   .ant-collapse {
     position: relative;
     .ant-collapse-item {

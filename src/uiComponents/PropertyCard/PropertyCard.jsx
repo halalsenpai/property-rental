@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
+import CurrencyFormat from "react-currency-format";
 
 import { Card, Badge, Carousel, Tooltip, Divider, Space } from "antd";
 import { HeartOutlined } from "@ant-design/icons";
 import "./_propertyCard.scss";
 import { findIcon, getTagText, titleCase } from "../../helpers/helpers";
 import { PropertyModal } from "../../appComponents/PropertyModal/PropertyModal";
-import { useAppDispatch } from "../../utils/hooks";
-import { openStreetView } from "../../pages/PropertySearch/slice";
+import { useAppDispatch, useAppSelector } from "../../utils/hooks";
+import { openStreetView, removeFavoriteProperties, selectFavoriteProps, setFavoriteProperties } from "../../pages/PropertySearch/slice";
+import { useGoogleMap } from "@react-google-maps/api";
 
 export const PropertyCard = (props) => {
-  const { propertyData, type } = props;
+  const { propertyData, type, setSelectedProperty, selectedProperty, setPropetyCardData } = props;
   const {
+    uid,
     category,
     extra,
     bedrooms,
@@ -32,8 +35,10 @@ export const PropertyCard = (props) => {
   const { title, images, price_history, prop_address, url } = extra;
 
   const [showModal, setShowModal] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(null);
 
   const dispatch = useAppDispatch();
+  const favProps = useAppSelector(selectFavoriteProps);
 
   const handleOpenPropertyModal = () => {
     setShowModal(true);
@@ -45,28 +50,45 @@ export const PropertyCard = (props) => {
     window.open(url, "_blank");
   };
 
+  const setFavorite = () => {
+    if (favProps.length < 1 || favProps.find((v) => v.uid !== uid)) {
+      dispatch(setFavoriteProperties(propertyData));
+    } else if (favProps.find((v) => v.uid === uid)) {
+      console.log("object");
+      dispatch(removeFavoriteProperties(propertyData));
+    }
+  };
   return (
-    <div className="property-card">
+    <div className={`property-card ${selectedProperty && selectedProperty?.uid === uid ? "highlighted" : ""}`}>
       {/* If the client has future plans to have featured cards */}
       {/* <Badge.Ribbon text={"reduced"} color={"green"}> */}
       <Card
+        onClick={() => {
+          setSelectedProperty(propertyData);
+          // setPropetyCardData(propertyData);
+        }}
         title={
-          <a target="_blank" className="text-black" href={url} title={title}>
-            {title}
-          </a>
+          <div className="d-flex justify-content-between">
+            <a target="_blank" className="text-black" href={url} title={title}>
+              {title}
+            </a>
+            <div onClick={() => setFavorite()}>
+              <i className={`${isFavorite ? `fas` : `far`} fa-heart`}></i>
+            </div>
+          </div>
         }
         extra={<div style={{ zIndex: "22" }}></div>}
         cover={
           <>
             <div className="tag-div">
-              <span>{reduced !== null && <Badge style={{ backgroundColor: "#52c41a" }} count={`Reduced: ${reduced.toFixed(0)}%`} />}</span>
+              <span>{reduced > 1 && <Badge style={{ backgroundColor: "#2BABE3" }} count={`Reduced: ${reduced.toFixed(0)}%`} />}</span>
               <span>{multi_agents?.length && <Badge style={{ backgroundColor: "#52c41a" }} count={`Multi Agents`} />}</span>
-              <span>{resale !== false && <Badge style={{ backgroundColor: "#52c41a" }} count={`Resale`} />}</span>
-              <span>{under_offer !== false && <Badge style={{ backgroundColor: "#52c41a" }} count={`Under Offer`} />}</span>
-              <span>{sold !== false && <Badge style={{ backgroundColor: "#52c41a" }} count={`Sold`} />}</span>
-              <span>{let_agreed !== false && <Badge style={{ backgroundColor: "#52c41a" }} count={`Let Agreed`} />}</span>
-              <span>{cross_similar !== false && <Badge style={{ backgroundColor: "#52c41a" }} count={`Cross Similar`} />}</span>
-              <span>{negative_equity !== null && <Badge style={{ backgroundColor: "#52c41a" }} count={`Negative Price`} />}</span>
+              <span>{resale === true && <Badge style={{ backgroundColor: "#ED208A" }} count={`Resale`} />}</span>
+              <span>{under_offer === true && <Badge style={{ backgroundColor: "#75C2A8" }} count={`Under Offer`} />}</span>
+              <span>{sold === true && <Badge style={{ backgroundColor: "#52c41a" }} count={`Sold`} />}</span>
+              <span>{let_agreed === true && <Badge style={{ backgroundColor: "#BDBCBC" }} count={`Let Agreed`} />}</span>
+              <span>{cross_similar !== null && <Badge style={{ backgroundColor: "#E84633" }} count={`Sale/Rent`} />}</span>
+              <span>{negative_equity < -0.1 && <Badge style={{ backgroundColor: "#231E46" }} count={`Negative Price ${negative_equity.toFixed(1)}%`} />}</span>
             </div>
             <Carousel arrows={true}>
               {images &&
@@ -106,7 +128,7 @@ export const PropertyCard = (props) => {
         <Divider dashed />
         <div className="d-flex justify-content-between all-text-muted">
           <span>Price</span>
-          <span>{price_history[0]?.price}</span>
+          <CurrencyFormat value={price_history[0]?.price} displayType={"text"} thousandSeparator={true} prefix={"£"} />
         </div>
         <Divider dashed />
         <div className="justify-content-between all-text-muted">

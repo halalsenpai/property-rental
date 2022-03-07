@@ -19,9 +19,7 @@ const reducers = combineReducers({
 export const store = configureStore({
   reducer: reducers,
   middleware: getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-    },
+    serializableCheck: false,
   }),
 });
 

@@ -1,7 +1,8 @@
-import React, { memo, useCallback, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import debounce from "lodash.debounce";
 import { getTileURL } from "../../helpers/helpers";
+import { MAP } from "react-google-maps/lib/constants";
 import { useAppDispatch } from "../../utils/hooks";
 import { getLandBounds } from "../../pages/PropertySearch/thunk";
 
@@ -19,13 +20,19 @@ const center = {
 
 const MapComponent = (props) => {
   const [map, setMap] = useState(null);
+  const [mapNode, setMapNode] = useState(null);
+  const dispatch = useAppDispatch();
 
   const onLoad = useCallback(function onLoad(mapInstance) {
     console.log(mapInstance);
     setMap(mapInstance);
+    MAP = map;
   });
-
-  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (props.center) {
+      map.setCenter(props.center);
+    }
+  }, [props.center]);
 
   const handleBoundsChange = () => {
     let b = map.getBounds();
@@ -42,14 +49,14 @@ const MapComponent = (props) => {
   return (
     <LoadScript libraries={googleLibs} googleMapsApiKey="AIzaSyAxfn5nn1AZl1aVNbZyqm6FoSizrczwalw">
       <GoogleMap
-        options={{ restriction: { strictBounds: true, latLngBounds: { north: 58, south: 49.9, west: -7, east: 3 } } }}
+        options={{ disableDefaultUI: false, fullscreenControl: false, restriction: { strictBounds: true, latLngBounds: { north: 58, south: 49.9, west: -7, east: 3 } } }}
         onLoad={onLoad}
         // onBoundsChanged={debouncedHandleBoundsChange}
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={1}>
+        zoom={props.zoom}>
         {/* Child components, such as markers, info windows, etc. */}
-        <>{props.children}</>
+        {props.children}
       </GoogleMap>
     </LoadScript>
   );

@@ -1,10 +1,11 @@
-import { InfoBox, InfoWindow, Marker, MarkerClusterer } from "@react-google-maps/api";
+import { InfoBox, InfoWindow, Marker, MarkerClusterer, useGoogleMap } from "@react-google-maps/api";
 import { Popover, Tooltip } from "antd";
 import React, { useState } from "react";
 import { PropertyCard } from "../PropertyCard/PropertyCard";
 
 export const MarkerPopover = (props) => {
   const { propertyData, clusterer, onClick, setPropetyCardData } = props;
+  const map = useGoogleMap();
 
   return (
     <Marker

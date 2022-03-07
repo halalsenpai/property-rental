@@ -1,4 +1,18 @@
-@import "~bootstrap/scss/bootstrap";
+@import "/node_modules/bootstrap/scss/functions";
+
+// 2. Include any default variable overrides here
+$primary: #231e46;
+$orange: #e84633;
+
+$theme-colors: (
+  "primary": $primary,
+  "orange": $orange,
+);
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "/node_modules/bootstrap/scss/variables";
+@import "/node_modules/bootstrap/scss/mixins";
+@import "/node_modules/bootstrap/scss/bootstrap.scss";
 @import "/node_modules/bootstrap-icons/font/bootstrap-icons.css";
 
 :root::-webkit-scrollbar {

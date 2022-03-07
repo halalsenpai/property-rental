@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Select, Row, Col, Slider, InputNumber, Switch, Button } from "antd";
 import { useAppDispatch, useAppSelector } from "../../utils/hooks";
-import { clearPropertyList, selectKeywordsRulesList, selectPropertyTypes, selectSortBy } from "../../pages/PropertySearch/slice";
+import { clearPropertyList, selectKeywordsRulesList, selectPropertyLoading, selectPropertyTypes, selectSortBy, selectStatus } from "../../pages/PropertySearch/slice";
 import { cleanObject, jsonToQueryString } from "../../helpers/helpers";
 import * as queryString from "query-string";
 import { getProperties } from "../../pages/PropertySearch/thunk";
@@ -21,6 +21,7 @@ export const Filter = ({ setActivePanel, setPayloadPropSearch, setPropertyList }
   const propertyTypes = useAppSelector(selectPropertyTypes);
   const keywordsRulesList = useAppSelector(selectKeywordsRulesList);
   const sortBy = useAppSelector(selectSortBy);
+  const isPropLoading = useAppSelector(selectPropertyLoading);
 
   useEffect(() => {
     console.log(includeTagsList);
@@ -73,7 +74,7 @@ export const Filter = ({ setActivePanel, setPayloadPropSearch, setPropertyList }
   return (
     <div className="">
       <div className="card-body">
-        <h5 className="card-title">Customize search parameters</h5>
+        <h5 className="card-title">Customise search parameters</h5>
         <p className="card-text"></p>
         <Form
           form={form}
@@ -230,10 +231,11 @@ export const Filter = ({ setActivePanel, setPayloadPropSearch, setPropertyList }
             </Col>
           </Row>
           <div className="d-flex justify-content-end">
-            <button type="button" onClick={() => form.resetFields()} className="btn btn-danger me-2">
+            <button disabled={isPropLoading} type="button" onClick={() => form.resetFields()} className="btn btn-orange me-2">
               Clear Filter
             </button>
-            <button type="submit" className="btn btn-primary">
+            <button disabled={isPropLoading} type="submit" className="btn btn-primary">
+              {isPropLoading && <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>}
               Search
             </button>
           </div>

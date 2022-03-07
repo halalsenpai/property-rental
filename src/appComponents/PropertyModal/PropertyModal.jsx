@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import CurrencyFormat from "react-currency-format";
+
 import { Modal, Button, Divider, Descriptions, PageHeader, Empty, Tooltip, Space } from "antd";
 import { findIcon, getTagText } from "../../helpers/helpers";
+import DescriptionsItem from "antd/lib/descriptions/Item";
 
 export const PropertyModal = (props) => {
   const { showModal, setShowModal, propertyData } = props;
-  const { category, extra, bedrooms, source, calc_posted, reduced, region, keywords } = propertyData || {};
+  const { category, extra, bedrooms, source, calc_posted, reduced, region, keywords, full_address } = propertyData || {};
   const { title, images, price_history, prop_address, agent, agent_phone, agent_address, sold_history } = extra || {};
 
+  const [address, setAddress] = useState(null);
   const handleOk = () => {
     setShowModal(false);
   };
@@ -14,9 +18,15 @@ export const PropertyModal = (props) => {
   const handleCancel = () => {
     setShowModal(false);
   };
-  console.log(propertyData);
+  useEffect(() => {
+    if (full_address) {
+      let address = JSON.parse(full_address);
+      setAddress(address);
+    }
+  }, [full_address]);
+
   return (
-    <Modal width={1000} title="Property Details" visible={showModal} onOk={handleOk} onCancel={handleCancel}>
+    <Modal width={1000} title="Property Details" visible={showModal} footer={null} onOk={handleOk} onCancel={handleCancel}>
       <div className="d-flex justify-content-between all-text-muted">
         <span>Listed Date</span>
         <span>{calc_posted.split("-").reverse().join("-")}</span>
@@ -26,19 +36,26 @@ export const PropertyModal = (props) => {
         <Descriptions.Item span={3} label="Title">
           {title}
         </Descriptions.Item>
-        <Descriptions.Item span={2} label="Region">
-          {region}
+        <Descriptions.Item span={3} label="Bedrooms">
+          {bedrooms}
         </Descriptions.Item>
+
         <Descriptions.Item span={2} label="Address">
           {prop_address}
         </Descriptions.Item>
-        {bedrooms && (
-          <Descriptions.Item span={2} label="Bedrooms">
-            {bedrooms}
-          </Descriptions.Item>
-        )}
+
+        <Descriptions.Item span={2} label="Region">
+          {region}
+        </Descriptions.Item>
+
+        <DescriptionsItem span={3} label="Full Address">
+          <div>
+            <pre>{JSON.stringify(address, null, 3)}</pre>
+          </div>
+        </DescriptionsItem>
       </Descriptions>
-      <Space>
+
+      <Space className="mt-2">
         {keywords?.length > 0 &&
           keywords.map((word, i) => (
             <Tooltip title={getTagText(word)}>
@@ -51,13 +68,13 @@ export const PropertyModal = (props) => {
       <Divider />
 
       <Descriptions title={"Agent Info"} bordered>
-        <Descriptions.Item span={1} label="Agent">
+        <Descriptions.Item span={3} label="Agent">
           {agent}
         </Descriptions.Item>
-        <Descriptions.Item span={1} label="Telephone">
+        <Descriptions.Item span={3} label="Telephone">
           {agent_phone}
         </Descriptions.Item>
-        <Descriptions.Item span={1} label="Address">
+        <Descriptions.Item span={3} label="Address">
           {agent_address}
         </Descriptions.Item>
       </Descriptions>
@@ -75,7 +92,7 @@ export const PropertyModal = (props) => {
                 price_history.map((item, i) => (
                   <div className="d-flex justify-content-between all-text-muted">
                     <span>{item.date}</span>
-                    <span>{item.price}€</span>
+                    <CurrencyFormat value={item?.price} displayType={"text"} thousandSeparator={true} prefix={"£"} />
                   </div>
                 ))}
             </Descriptions.Item>
