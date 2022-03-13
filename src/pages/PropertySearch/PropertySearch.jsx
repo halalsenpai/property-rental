@@ -99,10 +99,10 @@ export const PropertySearch = () => {
                   Highest Negative Equity
                 </Option>
                 <Option label="Time On Market" value="time_on_market">
-                  Newest
+                  Oldest
                 </Option>
                 <Option label="Time On Market Descending" value="time_on_market_desc">
-                  Oldest
+                  Newest
                 </Option>
                 <Option label="Bedrooms" value="bedrooms">
                   Least Bedrooms

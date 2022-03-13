@@ -107,12 +107,32 @@ export const getTileURL = (lat, lon, zoom) => {
 };
 
 export function titleCase(str) {
-  var splitStr = str.toLowerCase().split(' ');
+  var splitStr = str.toLowerCase().split(" ");
   for (var i = 0; i < splitStr.length; i++) {
-      // You do not need to check if i is larger than splitStr length, as your for does that for you
-      // Assign it back to the array
-      splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+    // You do not need to check if i is larger than splitStr length, as your for does that for you
+    // Assign it back to the array
+    splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
   }
   // Directly return the joined string
-  return splitStr.join(' '); 
+  return splitStr.join(" ");
 }
+
+export const getTimeOnMarket = (calc_posted) => {
+  var a = new Date();
+  var b = new Date(calc_posted);
+  const weeks = Math.round((a - b) / 604800000);
+  return weeks;
+};
+
+export const priceType = (key) => {
+  switch (key) {
+    case "pm":
+      return " Per Month";
+
+    case "weekly":
+      return " Per Week";
+
+    default:
+      return " ";
+  }
+};

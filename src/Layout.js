@@ -1,9 +1,10 @@
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Navbar } from "./appComponents/Navbar/Navbar";
 import { selectAuthSuccess } from "./auth/slice";
 import { getUserInfo } from "./auth/thunk";
+import PrivateRoute from "./helpers/ProtectedRoute";
 import { PropertySearch } from "./pages/PropertySearch/PropertySearch";
 import { getPropertyTypes } from "./pages/PropertySearch/service";
 import { selectPropertyTypes } from "./pages/PropertySearch/slice";
@@ -30,15 +31,25 @@ export const Layout = () => {
     dispatch(getUserInfo());
   }, []);
 
-  if (!authenticated) {
-    return <div>loading</div>;
-  }
+  // if (!authenticated) {
+  //   return <div>loading</div>;
+  // }
   return (
     <div className="Layout">
       <Navbar />
-      <Switch>
-        <Route path="/" component={PropertySearch} />
-      </Switch>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <div className="App">
+                <PropertySearch />
+              </div>
+            </PrivateRoute>
+          }
+        />
+        <Route path="/test" element={<div>hello</div>} />
+      </Routes>
     </div>
   );
 };

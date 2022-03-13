@@ -1,14 +1,33 @@
 import { InfoBox, InfoWindow, Marker, MarkerClusterer, useGoogleMap } from "@react-google-maps/api";
 import { Popover, Tooltip } from "antd";
 import React, { useState } from "react";
+import { getTimeOnMarket } from "../../helpers/helpers";
 import { PropertyCard } from "../PropertyCard/PropertyCard";
 
 export const MarkerPopover = (props) => {
-  const { propertyData, clusterer, onClick, setPropetyCardData } = props;
+  const { propertyData, clusterer, setPropetyCardData } = props;
   const map = useGoogleMap();
+  const weeks = getTimeOnMarket(propertyData.calc_posted);
 
+  const markerColor = (weeks) => {
+    console.log("week==>", weeks);
+    if (weeks < 2) {
+      return "yellow";
+    }
+    if (weeks > 2 && weeks < 4) {
+      return "#e84633";
+    }
+  };
   return (
     <Marker
+      icon={{
+        path: "M384 192C384 279.4 267 435 215.7 499.2C203.4 514.5 180.6 514.5 168.3 499.2C116.1 435 0 279.4 0 192C0 85.96 85.96 0 192 0C298 0 384 85.96 384 192H384z",
+        fillColor: markerColor(weeks),
+        fillOpacity: 0.9,
+        scale: 0.05,
+        strokeColor: "red",
+        strokeWeight: 1,
+      }}
       onClick={() => setPropetyCardData(propertyData)}
       key={propertyData.longitude + propertyData.latitude}
       position={{ lng: propertyData.longitude, lat: propertyData.latitude }}

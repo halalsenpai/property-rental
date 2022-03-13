@@ -4,7 +4,7 @@ import CurrencyFormat from "react-currency-format";
 import { Card, Badge, Carousel, Tooltip, Divider, Space } from "antd";
 import { HeartOutlined } from "@ant-design/icons";
 import "./_propertyCard.scss";
-import { findIcon, getTagText, titleCase } from "../../helpers/helpers";
+import { findIcon, getTagText, getTimeOnMarket, priceType, titleCase } from "../../helpers/helpers";
 import { PropertyModal } from "../../appComponents/PropertyModal/PropertyModal";
 import { useAppDispatch, useAppSelector } from "../../utils/hooks";
 import { openStreetView, removeFavoriteProperties, selectFavoriteProps, setFavoriteProperties } from "../../pages/PropertySearch/slice";
@@ -13,6 +13,7 @@ import { useGoogleMap } from "@react-google-maps/api";
 export const PropertyCard = (props) => {
   const { propertyData, type, setSelectedProperty, selectedProperty, setPropetyCardData } = props;
   const {
+    price_period,
     uid,
     category,
     extra,
@@ -58,6 +59,7 @@ export const PropertyCard = (props) => {
       dispatch(removeFavoriteProperties(propertyData));
     }
   };
+  console.log("dee", getTimeOnMarket(calc_posted));
   return (
     <div className={`property-card ${selectedProperty && selectedProperty?.uid === uid ? "highlighted" : ""}`}>
       {/* If the client has future plans to have featured cards */}
@@ -88,7 +90,7 @@ export const PropertyCard = (props) => {
               <span>{sold === true && <Badge style={{ backgroundColor: "#52c41a" }} count={`Sold`} />}</span>
               <span>{let_agreed === true && <Badge style={{ backgroundColor: "#BDBCBC" }} count={`Let Agreed`} />}</span>
               <span>{cross_similar !== null && <Badge style={{ backgroundColor: "#E84633" }} count={`Sale/Rent`} />}</span>
-              <span>{negative_equity < -0.1 && <Badge style={{ backgroundColor: "#231E46" }} count={`Negative Price ${negative_equity.toFixed(1)}%`} />}</span>
+              <span>{negative_equity < 0 && <Badge style={{ backgroundColor: "#231E46" }} count={`Negative Price ${negative_equity.toFixed(1)}%`} />}</span>
             </div>
             <Carousel arrows={true}>
               {images &&
@@ -128,7 +130,9 @@ export const PropertyCard = (props) => {
         <Divider dashed />
         <div className="d-flex justify-content-between all-text-muted">
           <span>Price</span>
-          <CurrencyFormat value={price_history[0]?.price} displayType={"text"} thousandSeparator={true} prefix={"£"} />
+          <span>
+            <CurrencyFormat value={price_history[0]?.price} displayType={"text"} thousandSeparator={true} prefix={"£"} />{priceType(price_period)}
+          </span>
         </div>
         <Divider dashed />
         <div className="justify-content-between all-text-muted">
