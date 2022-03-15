@@ -7,7 +7,7 @@ import { Layout } from "./Layout";
 import { useQuery } from "./utils/hooks";
 
 export const App = () => {
-  console.log("testing");
+  console.log("App works");
   return (
     <ReactKeycloakProvider authClient={keycloak}>
       <BrowserRouter>

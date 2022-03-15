@@ -1,8 +1,8 @@
 import Keycloak from "keycloak-js";
 const keycloak = new Keycloak({
-  url: "http://localhost:8080/auth",
-  realm: "Keycloak-react-auth",
-  clientId: "React-auth",
+  url: "https://keycloak.psengine.co.uk/auth",
+  realm: "sourced",
+  clientId: "propapp",
 });
 
 export default keycloak;

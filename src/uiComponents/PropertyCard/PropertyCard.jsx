@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CurrencyFormat from "react-currency-format";
 
 import { Card, Badge, Carousel, Tooltip, Divider, Space } from "antd";
@@ -11,7 +11,7 @@ import { openStreetView, removeFavoriteProperties, selectFavoriteProps, setFavor
 import { useGoogleMap } from "@react-google-maps/api";
 
 export const PropertyCard = (props) => {
-  const { propertyData, type, setSelectedProperty, selectedProperty, setPropetyCardData } = props;
+  const { propertyData, type, setSelectedProperty, selectedProperty, setPropetyCardData, ref } = props;
   const {
     price_period,
     uid,
@@ -38,6 +38,8 @@ export const PropertyCard = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [isFavorite, setIsFavorite] = useState(null);
 
+  const cardRef = useRef(null);
+
   const dispatch = useAppDispatch();
   const favProps = useAppSelector(selectFavoriteProps);
 
@@ -51,6 +53,10 @@ export const PropertyCard = (props) => {
     window.open(url, "_blank");
   };
 
+  useEffect(() => {
+    cardRef && cardRef.current.scrollIntoView();
+  }, [selectedProperty]);
+
   const setFavorite = () => {
     if (favProps.length < 1 || favProps.find((v) => v.uid !== uid)) {
       dispatch(setFavoriteProperties(propertyData));
@@ -59,9 +65,8 @@ export const PropertyCard = (props) => {
       dispatch(removeFavoriteProperties(propertyData));
     }
   };
-  console.log("dee", getTimeOnMarket(calc_posted));
   return (
-    <div className={`property-card ${selectedProperty && selectedProperty?.uid === uid ? "highlighted" : ""}`}>
+    <div ref={cardRef} className={`property-card ${selectedProperty && selectedProperty?.uid === uid ? "highlighted" : ""}`}>
       {/* If the client has future plans to have featured cards */}
       {/* <Badge.Ribbon text={"reduced"} color={"green"}> */}
       <Card
@@ -131,7 +136,8 @@ export const PropertyCard = (props) => {
         <div className="d-flex justify-content-between all-text-muted">
           <span>Price</span>
           <span>
-            <CurrencyFormat value={price_history[0]?.price} displayType={"text"} thousandSeparator={true} prefix={"£"} />{priceType(price_period)}
+            <CurrencyFormat value={price_history[0]?.price} displayType={"text"} thousandSeparator={true} prefix={"£"} />
+            {priceType(price_period)}
           </span>
         </div>
         <Divider dashed />

@@ -1,3 +1,4 @@
+import { useKeycloak } from "@react-keycloak/web";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
@@ -12,23 +13,17 @@ import { getToken, setToken } from "./utils/auth";
 import { useAppDispatch, useAppSelector, useQuery } from "./utils/hooks";
 
 export const Layout = () => {
-  const [authenticated, setAuthenticated] = useState(false);
   const query = useQuery();
   const dispatch = useAppDispatch();
 
-  const selectIsAuthenticated = useAppSelector(selectAuthSuccess);
-
-  useEffect(() => {
-    console.log("is auth", selectIsAuthenticated);
-    setAuthenticated(selectIsAuthenticated);
-  }, [selectIsAuthenticated]);
+  // const selectIsAuthenticated = useAppSelector(selectAuthSuccess);
 
   useEffect(() => {
     const token = query.get("token");
     const localToken = getToken();
     const _token = token || localToken;
     _token && setToken(_token);
-    dispatch(getUserInfo());
+    // dispatch(getUserInfo());
   }, []);
 
   // if (!authenticated) {

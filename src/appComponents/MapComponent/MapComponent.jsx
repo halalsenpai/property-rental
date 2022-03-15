@@ -5,6 +5,7 @@ import { getTileURL } from "../../helpers/helpers";
 import { MAP } from "react-google-maps/lib/constants";
 import { useAppDispatch } from "../../utils/hooks";
 import { getLandBounds } from "../../pages/PropertySearch/thunk";
+import "./_MapComponent.scss";
 
 const googleLibs = ["places"];
 
@@ -24,9 +25,8 @@ const MapComponent = (props) => {
   const dispatch = useAppDispatch();
 
   const onLoad = useCallback(function onLoad(mapInstance) {
-    console.log(mapInstance);
+    // console.log(mapInstance);
     setMap(mapInstance);
-    MAP = map;
   });
   useEffect(() => {
     if (props.center) {
@@ -49,7 +49,12 @@ const MapComponent = (props) => {
   return (
     <LoadScript libraries={googleLibs} googleMapsApiKey="AIzaSyAxfn5nn1AZl1aVNbZyqm6FoSizrczwalw">
       <GoogleMap
-        options={{ disableDefaultUI: false, fullscreenControl: false, restriction: { strictBounds: true, latLngBounds: { north: 58, south: 49.9, west: -7, east: 3 } } }}
+        options={{
+          mapTypeControlOptions: { position: 6.0, style: 1.0 },
+          disableDefaultUI: false,
+          fullscreenControl: false,
+          restriction: { strictBounds: true, latLngBounds: { north: 58, south: 49.9, west: -7, east: 3 } },
+        }}
         onLoad={onLoad}
         // onBoundsChanged={debouncedHandleBoundsChange}
         mapContainerStyle={containerStyle}

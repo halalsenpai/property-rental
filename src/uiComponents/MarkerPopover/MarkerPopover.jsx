@@ -10,12 +10,16 @@ export const MarkerPopover = (props) => {
   const weeks = getTimeOnMarket(propertyData.calc_posted);
 
   const markerColor = (weeks) => {
-    console.log("week==>", weeks);
     if (weeks < 2) {
-      return "yellow";
-    }
-    if (weeks > 2 && weeks < 4) {
-      return "#e84633";
+      return "#E84633";
+    } else if (weeks > 2 && weeks < 4) {
+      return "#A63124";
+    } else if (weeks > 4 && weeks < 8) {
+      return "#661E16";
+    } else if (weeks > 8 && weeks < 12) {
+      return "#591B14";
+    } else if (weeks > 12) {
+      return "#40130E";
     }
   };
   return (
@@ -25,10 +29,12 @@ export const MarkerPopover = (props) => {
         fillColor: markerColor(weeks),
         fillOpacity: 0.9,
         scale: 0.05,
-        strokeColor: "red",
+        strokeColor: markerColor(weeks),
         strokeWeight: 1,
       }}
-      onClick={() => setPropetyCardData(propertyData)}
+      onClick={() => {
+        setPropetyCardData(propertyData);
+      }}
       key={propertyData.longitude + propertyData.latitude}
       position={{ lng: propertyData.longitude, lat: propertyData.latitude }}
       clusterer={clusterer}

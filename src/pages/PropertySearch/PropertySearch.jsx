@@ -26,6 +26,9 @@ export const PropertySearch = () => {
   const [payloadPropSearch, setPayloadPropSearch] = useState(null);
   const [fullScreen, setFullScreen] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState(null);
+  const [cardRef, setCardRef] = useState(null);
+
+  const propCardRef = useRef(null);
 
   const properties = useAppSelector(selectProperties);
   const streetViewCords = useAppSelector(selectStreetViewCords);
@@ -33,8 +36,6 @@ export const PropertySearch = () => {
   const propertyListMeta = useAppSelector(selectPropertyListMeta);
 
   const dispatch = useAppDispatch();
-
-  const streetViewRef = useRef();
 
   useEffect(() => {
     dispatch(getPropertyTypes());
@@ -52,6 +53,18 @@ export const PropertySearch = () => {
   useEffect(() => {
     console.log("selected", selectedProperty);
   }, [selectedProperty]);
+
+  useEffect(() => {
+    console.log(propCardRef);
+  }, [propCardRef.current]);
+
+  useEffect(() => {
+    setSelectedProperty(propetyCardData);
+    console.log("fell", propCardRef);
+    if (propCardRef.current) {
+      propCardRef.current.scrollIntoView();
+    }
+  }, [propetyCardData]);
 
   const handleEmptyStreetViewCords = () => {
     dispatch(openStreetView(null));
@@ -125,6 +138,7 @@ export const PropertySearch = () => {
             <Spin wrapperClassName={"property-card-spinner"} spinning={isLoading}>
               {propertyList.length < 1 && <Empty description="Use the filters to search for properties" />}{" "}
               <PropertyCards
+                ref={propCardRef}
                 selectedProperty={selectedProperty}
                 setPropetyCardData={setPropetyCardData}
                 setSelectedProperty={setSelectedProperty}
@@ -156,9 +170,11 @@ export const PropertySearch = () => {
 
             <AutoComplete />
             <MarkerClusterer options={{ maxZoom: 12 }}>
-              {(clusterer) => propertyList.map((prop) => <MarkerPopover setPropetyCardData={setPropetyCardData} clusterer={clusterer} propertyData={prop} />)}
+              {(clusterer) =>
+                propertyList.map((prop) => <MarkerPopover cardRef={cardRef} setCardRef={setCardRef} propCardRef={propCardRef} setPropetyCardData={setPropetyCardData} clusterer={clusterer} propertyData={prop} />)
+              }
             </MarkerClusterer>
-            {propetyCardData && (
+            {/* {propetyCardData && (
               <InfoWindow
                 onCloseClick={() => {
                   setPropetyCardData(null);
@@ -170,7 +186,7 @@ export const PropertySearch = () => {
                   <PropertyCard propertyData={propetyCardData} />
                 </div>
               </InfoWindow>
-            )}
+            )} */}
 
             {streetViewCords && <StreetViewPanorama visible={true} onCloseClick={handleEmptyStreetViewCords} options={{ position: streetViewCords, enableCloseButton: true }} />}
           </MapComponent>
