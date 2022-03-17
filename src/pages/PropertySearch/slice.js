@@ -15,6 +15,7 @@ const initialState = {
   propertiesMeta: null,
   mapInstance: null,
   favoriteProperties: [],
+  selectedCardRef: null,
 };
 
 export const slice = createSlice({
@@ -42,6 +43,9 @@ export const slice = createSlice({
       const splice = state.favoriteProperties.splice(state.favoriteProperties.indexOf(action.payload), 1);
       console.log(splice);
       state.favoriteProperties = splice;
+    },
+    setSelectedCardRef(state, action) {
+      state.selectedCardRef = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -90,7 +94,8 @@ export const selectPropertyLoading = (state) => state.propertySearch.propLoading
 export const selectPropertyListMeta = (state) => state.propertySearch.propertiesMeta;
 export const selectMapInstance = (state) => state.propertySearch.mapInstance;
 export const selectFavoriteProps = (state) => state.propertySearch.favoriteProperties;
+export const selectSelectedCardRef = (state) => state.propertySearch.selectedCardRef;
 
-export const { openStreetView, sortBy, clearPropertyList, setMapInstance, setFavoriteProperties, removeFavoriteProperties } = slice.actions;
+export const { openStreetView, sortBy, clearPropertyList, setMapInstance, setFavoriteProperties, removeFavoriteProperties, setSelectedCardRef } = slice.actions;
 
 export default slice.reducer;

@@ -60,7 +60,6 @@ export const PropertySearch = () => {
 
   useEffect(() => {
     setSelectedProperty(propetyCardData);
-    console.log("fell", propCardRef);
     if (propCardRef.current) {
       propCardRef.current.scrollIntoView();
     }
@@ -138,7 +137,6 @@ export const PropertySearch = () => {
             <Spin wrapperClassName={"property-card-spinner"} spinning={isLoading}>
               {propertyList.length < 1 && <Empty description="Use the filters to search for properties" />}{" "}
               <PropertyCards
-                ref={propCardRef}
                 selectedProperty={selectedProperty}
                 setPropetyCardData={setPropetyCardData}
                 setSelectedProperty={setSelectedProperty}
@@ -171,7 +169,7 @@ export const PropertySearch = () => {
             <AutoComplete />
             <MarkerClusterer options={{ maxZoom: 12 }}>
               {(clusterer) =>
-                propertyList.map((prop) => <MarkerPopover cardRef={cardRef} setCardRef={setCardRef} propCardRef={propCardRef} setPropetyCardData={setPropetyCardData} clusterer={clusterer} propertyData={prop} />)
+                propertyList.map((prop) => <MarkerPopover selectedProperty={selectedProperty} setPropetyCardData={setPropetyCardData} clusterer={clusterer} propertyData={prop} />)
               }
             </MarkerClusterer>
             {/* {propetyCardData && (

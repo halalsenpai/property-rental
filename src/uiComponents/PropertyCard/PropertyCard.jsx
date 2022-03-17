@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { createRef, useEffect, useRef, useState } from "react";
 import CurrencyFormat from "react-currency-format";
 
 import { Card, Badge, Carousel, Tooltip, Divider, Space } from "antd";
@@ -7,11 +7,11 @@ import "./_propertyCard.scss";
 import { findIcon, getTagText, getTimeOnMarket, priceType, titleCase } from "../../helpers/helpers";
 import { PropertyModal } from "../../appComponents/PropertyModal/PropertyModal";
 import { useAppDispatch, useAppSelector } from "../../utils/hooks";
-import { openStreetView, removeFavoriteProperties, selectFavoriteProps, setFavoriteProperties } from "../../pages/PropertySearch/slice";
+import { openStreetView, removeFavoriteProperties, selectFavoriteProps, selectSelectedCardRef, setFavoriteProperties, setSelectedCardRef } from "../../pages/PropertySearch/slice";
 import { useGoogleMap } from "@react-google-maps/api";
 
-export const PropertyCard = (props) => {
-  const { propertyData, type, setSelectedProperty, selectedProperty, setPropetyCardData, ref } = props;
+export const PropertyCard = React.forwardRef((props, ref) => {
+  const { propertyData, setSelectedProperty, selectedProperty, setPropetyCardData } = props;
   const {
     price_period,
     uid,
@@ -38,10 +38,9 @@ export const PropertyCard = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [isFavorite, setIsFavorite] = useState(null);
 
-  const cardRef = useRef(null);
+  const cardRef = useRef();
 
   const dispatch = useAppDispatch();
-  const favProps = useAppSelector(selectFavoriteProps);
 
   const handleOpenPropertyModal = () => {
     setShowModal(true);
@@ -54,19 +53,21 @@ export const PropertyCard = (props) => {
   };
 
   useEffect(() => {
-    cardRef && cardRef.current.scrollIntoView();
+    if (selectedProperty === propertyData) {
+      // dispatch(setSelectedCardRef(cardRef.current));
+    }
   }, [selectedProperty]);
 
-  const setFavorite = () => {
-    if (favProps.length < 1 || favProps.find((v) => v.uid !== uid)) {
-      dispatch(setFavoriteProperties(propertyData));
-    } else if (favProps.find((v) => v.uid === uid)) {
-      console.log("object");
-      dispatch(removeFavoriteProperties(propertyData));
-    }
-  };
+  // const setFavorite = () => {
+  //   if (favProps.length < 1 || favProps.find((v) => v.uid !== uid)) {
+  //     dispatch(setFavoriteProperties(propertyData));
+  //   } else if (favProps.find((v) => v.uid === uid)) {
+  //     console.log("object");
+  //     dispatch(removeFavoriteProperties(propertyData));
+  //   }
+  // };
   return (
-    <div ref={cardRef} className={`property-card ${selectedProperty && selectedProperty?.uid === uid ? "highlighted" : ""}`}>
+    <div id={selectedProperty === propertyData ? "Selected_Card" : ""} className={`property-card ${selectedProperty && selectedProperty?.uid === uid ? "highlighted" : ""}`}>
       {/* If the client has future plans to have featured cards */}
       {/* <Badge.Ribbon text={"reduced"} color={"green"}> */}
       <Card
@@ -79,7 +80,7 @@ export const PropertyCard = (props) => {
             <a target="_blank" className="text-black" href={url} title={title}>
               {title}
             </a>
-            <div onClick={() => setFavorite()}>
+            <div>
               <i className={`${isFavorite ? `fas` : `far`} fa-heart`}></i>
             </div>
           </div>
@@ -174,4 +175,4 @@ export const PropertyCard = (props) => {
       {showModal && <PropertyModal propertyData={propertyData} showModal={showModal} setShowModal={setShowModal} />}
     </div>
   );
-};
+});

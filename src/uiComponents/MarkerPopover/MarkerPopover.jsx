@@ -1,11 +1,9 @@
 import { InfoBox, InfoWindow, Marker, MarkerClusterer, useGoogleMap } from "@react-google-maps/api";
-import { Popover, Tooltip } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getTimeOnMarket } from "../../helpers/helpers";
-import { PropertyCard } from "../PropertyCard/PropertyCard";
 
 export const MarkerPopover = (props) => {
-  const { propertyData, clusterer, setPropetyCardData } = props;
+  const { propertyData, clusterer, setPropetyCardData, selectedProperty } = props;
   const map = useGoogleMap();
   const weeks = getTimeOnMarket(propertyData.calc_posted);
 
@@ -22,6 +20,10 @@ export const MarkerPopover = (props) => {
       return "#40130E";
     }
   };
+  useEffect(() => {
+    document.getElementById("Selected_Card")?.scrollIntoView({ behavior: "smooth" });
+  }, [selectedProperty]);
+
   return (
     <Marker
       icon={{
