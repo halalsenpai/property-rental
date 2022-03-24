@@ -188,7 +188,7 @@ export const Filter = ({ setActivePanel, setPayloadPropSearch, setPropertyList }
               </Form.Item>
             </Col>
             <Col span={8} xs={24} sm={12} md={8} lg={8} xl={6} xxl={4}>
-              <Form.Item valuePropName="checked" name={"full_addrs_only"} label="Full Address Only">
+              <Form.Item valuePropName="checked" name={"full_addrs_only"} label="Full Address">
                 <Switch disabled={!["property-for-sale", "property-to-rent"].includes(category)} defaultChecked onChange={onChange} />
               </Form.Item>
             </Col>

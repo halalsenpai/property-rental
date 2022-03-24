@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import CurrencyFormat from "react-currency-format";
 
-import { Modal, Button, Divider, Descriptions, PageHeader, Empty, Tooltip, Space } from "antd";
-import { findIcon, getTagText } from "../../helpers/helpers";
+import { Modal, Button, Divider, Descriptions, PageHeader, Empty, Tooltip, Space, Collapse, Carousel } from "antd";
+import { findIcon, getTagText, priceType, titleCase } from "../../helpers/helpers";
 import DescriptionsItem from "antd/lib/descriptions/Item";
+
+const { Panel } = Collapse;
 
 export const PropertyModal = (props) => {
   const { showModal, setShowModal, propertyData } = props;
-  const { category, extra, bedrooms, source, calc_posted, reduced, region, keywords, full_address } = propertyData || {};
-  const { title, images, price_history, prop_address, agent, agent_phone, agent_address, sold_history } = extra || {};
+  const { category, extra, bedrooms, source, calc_posted, reduced, region, keywords, full_address, price_period, prop_type, price } = propertyData || {};
+  const { title, images, price_history, prop_address, agent, agent_phone, agent_address, sold_history, descr } = extra || {};
 
   const [address, setAddress] = useState(null);
   const handleOk = () => {
@@ -34,26 +36,66 @@ export const PropertyModal = (props) => {
       <Divider dashed />
       <Descriptions title={"Property Info"} bordered>
         <Descriptions.Item span={3} label="Title">
-          {title}
+          {titleCase(title)}
         </Descriptions.Item>
-        <Descriptions.Item span={3} label="Bedrooms">
+        <Descriptions.Item span={1} label="Property Type">
+          {prop_type?.replaceAll("_", " ")}
+        </Descriptions.Item>
+        <Descriptions.Item span={1} label="Bedrooms">
           {bedrooms}
         </Descriptions.Item>
-
-        <Descriptions.Item span={2} label="Address">
-          {prop_address}
+        <Descriptions.Item span={1} label="Price">
+          <CurrencyFormat value={price} displayType={"text"} thousandSeparator={true} prefix={"£"} />
+          {priceType(price_period)}
         </Descriptions.Item>
 
-        <Descriptions.Item span={2} label="Region">
-          {region}
+        {!address && (
+          <Descriptions.Item span={2} label="Address">
+            {prop_address}
+          </Descriptions.Item>
+        )}
+
+        <Descriptions.Item span={3} label="Description">
+          {descr}
         </Descriptions.Item>
 
-        <DescriptionsItem span={3} label="Full Address">
-          <div>
-            <pre>{JSON.stringify(address, null, 3)}</pre>
-          </div>
-        </DescriptionsItem>
+        {/* {address && (
+          <DescriptionsItem span={3} label="Full Address">
+            <div>
+              {console.log(address)}
+              <pre>{JSON.stringify(address, null, 3)}</pre>
+            </div>
+          </DescriptionsItem>
+        )} */}
       </Descriptions>
+      <Carousel arrows={true}>
+        {images &&
+          images.split(";").map((img, i) => (
+            <div key={i}>
+              <div style={{ width: "100%", height: "380px" }}>
+                <img
+                  src={img}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  onError={(e) =>
+                    (e.currentTarget.src = "https://schiffbauergasse.de/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png")
+                  }
+                />
+              </div>
+            </div>
+          ))}
+      </Carousel>
+
+      <br />
+
+      {address && (
+        <Descriptions title={"Address"} bordered>
+          {Object.keys(address).map((keyName, i) => (
+            <DescriptionsItem span={1} key={i} label={titleCase(keyName.replaceAll("_", " "))}>
+              {address[keyName]}
+            </DescriptionsItem>
+          ))}
+        </Descriptions>
+      )}
 
       <Space className="mt-2">
         {keywords?.length > 0 &&
@@ -82,7 +124,7 @@ export const PropertyModal = (props) => {
       <Descriptions title={"Price History"} bordered>
         {price_history?.length ? (
           <>
-            <Descriptions.Item span={2}>
+            <Descriptions.Item span={1}>
               <div className="d-flex justify-content-between all-text-muted">
                 <strong>Date</strong>
                 <strong>Price</strong>
@@ -91,17 +133,20 @@ export const PropertyModal = (props) => {
                 price_history.length > 0 &&
                 price_history.map((item, i) => (
                   <div className="d-flex justify-content-between all-text-muted">
-                    <span>{item.date}</span>
-                    <CurrencyFormat value={item?.price} displayType={"text"} thousandSeparator={true} prefix={"£"} />
+                    <span>{item.date.split("-").reverse().join("-")}</span>
+                    <span>
+                      <CurrencyFormat value={item?.price} displayType={"text"} thousandSeparator={true} prefix={"£"} />
+                      {priceType(price_period)}
+                    </span>
                   </div>
                 ))}
             </Descriptions.Item>
-            <Descriptions.Item span={4}>
+            <Descriptions.Item span={3}>
               <Empty />
             </Descriptions.Item>
           </>
         ) : (
-          <Descriptions.Item>
+          <Descriptions.Item span={3}>
             <Empty />
           </Descriptions.Item>
         )}
@@ -110,26 +155,26 @@ export const PropertyModal = (props) => {
       <Descriptions title={"Sold History"} bordered>
         {sold_history?.length ? (
           <>
-            <Descriptions.Item span={2}>
+            <Descriptions.Item span={1}>
               <div className="d-flex justify-content-between all-text-muted">
                 <strong>Date</strong>
                 <strong>Price</strong>
               </div>
               {price_history &&
-                price_history.length > 0 &&
-                price_history.map((item, i) => (
+                sold_history.length > 0 &&
+                sold_history.map((item, i) => (
                   <div className="d-flex justify-content-between all-text-muted">
                     <span>{item?.date}</span>
                     <span>{item?.price}</span>
                   </div>
                 ))}
             </Descriptions.Item>
-            <Descriptions.Item span={4}>
+            <Descriptions.Item span={2}>
               <Empty />
             </Descriptions.Item>
           </>
         ) : (
-          <Descriptions.Item>
+          <Descriptions.Item span={2}>
             <Empty />
           </Descriptions.Item>
         )}

@@ -98,37 +98,39 @@ export const PropertySearch = () => {
                 <i className="bi bi-funnel-fill text-light"></i>
               </button>
 
-              {propertyList.length > 1 && <div className="me-2">showing {propertyList.length} properties</div>}
-              <Select style={{ width: "200px" }} className="me-4" placeholder={"Sort by"} allowClear onChange={handleSort}>
-                <Option value="price">Lowest Price</Option>
-                <Option label="Price Descending" value="price_desc">
-                  Highest Price
-                </Option>
-                <Option label="Negative Equity" value="negative_equity">
-                  Lowest Negative Equity
-                </Option>
-                <Option label="Negative Equity Descending" value="negative_equity_desc">
-                  Highest Negative Equity
-                </Option>
-                <Option label="Time On Market" value="time_on_market">
-                  Oldest
-                </Option>
-                <Option label="Time On Market Descending" value="time_on_market_desc">
-                  Newest
-                </Option>
-                <Option label="Bedrooms" value="bedrooms">
-                  Least Bedrooms
-                </Option>
-                <Option label="Bedrooms Descending" value="bedrooms_desc">
-                  Most Bedrooms
-                </Option>
-                <Option label="Reduced" value="reduced">
-                  Least Reduced
-                </Option>
-                <Option label="Reduced Descending" value="reduced_desc">
-                  Most Reduced
-                </Option>
-              </Select>
+              <span className="d-flex align-items-center">
+                {propertyList.length > 1 && <div className="me-2">showing {propertyList.length} properties</div>}
+                <Select style={{ width: "200px" }} className="me-4" placeholder={"Sort by"} allowClear onChange={handleSort}>
+                  <Option value="price">Lowest Price</Option>
+                  <Option label="Price Descending" value="price_desc">
+                    Highest Price
+                  </Option>
+                  <Option label="Negative Equity" value="negative_equity">
+                    Lowest Negative Equity
+                  </Option>
+                  <Option label="Negative Equity Descending" value="negative_equity_desc">
+                    Highest Negative Equity
+                  </Option>
+                  <Option label="Time On Market" value="time_on_market">
+                    Oldest
+                  </Option>
+                  <Option label="Time On Market Descending" value="time_on_market_desc">
+                    Newest
+                  </Option>
+                  <Option label="Bedrooms" value="bedrooms">
+                    Least Bedrooms
+                  </Option>
+                  <Option label="Bedrooms Descending" value="bedrooms_desc">
+                    Most Bedrooms
+                  </Option>
+                  <Option label="Reduced" value="reduced">
+                    Least Reduced
+                  </Option>
+                  <Option label="Reduced Descending" value="reduced_desc">
+                    Most Reduced
+                  </Option>
+                </Select>
+              </span>
               <Button style={{ position: "absolute", right: "2px", top: "2px", border: "none", boxShadow: "none" }} shape="circle" onClick={() => setFullScreen(true)}>
                 <i className="fas fa-times"></i>
               </Button>

@@ -14,6 +14,7 @@ export const PropertyCard = React.forwardRef((props, ref) => {
   const { propertyData, setSelectedProperty, selectedProperty, setPropetyCardData } = props;
   const {
     price_period,
+    price,
     uid,
     category,
     extra,
@@ -96,14 +97,21 @@ export const PropertyCard = React.forwardRef((props, ref) => {
               <span>{sold === true && <Badge style={{ backgroundColor: "#52c41a" }} count={`Sold`} />}</span>
               <span>{let_agreed === true && <Badge style={{ backgroundColor: "#BDBCBC" }} count={`Let Agreed`} />}</span>
               <span>{cross_similar !== null && <Badge style={{ backgroundColor: "#E84633" }} count={`Sale/Rent`} />}</span>
-              <span>{negative_equity < 0 && <Badge style={{ backgroundColor: "#231E46" }} count={`Negative Price ${negative_equity.toFixed(1)}%`} />}</span>
+              <span>{negative_equity < 0 && sold && <Badge style={{ backgroundColor: "#231E46" }} count={`Negative Price ${negative_equity.toFixed(1)}%`} />}</span>
             </div>
             <Carousel arrows={true}>
               {images &&
                 images.split(";").map((img, i) => (
                   <div key={i}>
                     <div style={{ width: "100%", height: "180px" }}>
-                      <img src={img} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <img
+                        src={img}
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        onError={(e) =>
+                          (e.currentTarget.src =
+                            "https://schiffbauergasse.de/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png")
+                        }
+                      />
                     </div>
                   </div>
                 ))}
@@ -137,7 +145,7 @@ export const PropertyCard = React.forwardRef((props, ref) => {
         <div className="d-flex justify-content-between all-text-muted">
           <span>Price</span>
           <span>
-            <CurrencyFormat value={price_history[0]?.price} displayType={"text"} thousandSeparator={true} prefix={"£"} />
+            <CurrencyFormat value={price} displayType={"text"} thousandSeparator={true} prefix={"£"} />
             {priceType(price_period)}
           </span>
         </div>

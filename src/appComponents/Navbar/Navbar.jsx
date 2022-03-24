@@ -1,6 +1,7 @@
 import React from "react";
 import { Select } from "antd";
 import { useKeycloak } from "@react-keycloak/web";
+import { Link } from "react-router-dom";
 
 const { Option } = Select;
 
@@ -10,9 +11,15 @@ export const Navbar = () => {
   return (
     <nav className="navbar navbar-dark bg-primary">
       <div className="container-fluid">
-        <span className="navbar-brand mb-0 h1"> PropOpp </span>
+        <span className="navbar-brand mb-0 h1 py-0">
+          <Link to={"/"}>
+            {" "}
+            <img style={{ height: "40px" }} src={require("../../assets/icons/Sourced-Property-white-no-bg.png")} />
+            <span className="navbar-brand mb-0 h1 py-0">PropOpp</span>
+          </Link>
+        </span>
         <div>
-          <Select style={{ width: "100px", height: "38px" }} placeholder="Tool">
+          <Select style={{ width: "100px" }} placeholder="Tool">
             <Option>PropOpp</Option>
           </Select>
           {!keycloak.authenticated && (

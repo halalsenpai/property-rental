@@ -1,13 +1,13 @@
 import { ReactKeycloakProvider } from "@react-keycloak/web";
-import React, { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
 import keycloak from "./keycloak";
-import PrivateRoute from "./helpers/ProtectedRoute";
 import { Layout } from "./Layout";
-import { useQuery } from "./utils/hooks";
+import { loadStripe } from "@stripe/stripe-js";
 
 export const App = () => {
   console.log("App works");
+
   return (
     <ReactKeycloakProvider authClient={keycloak}>
       <BrowserRouter>

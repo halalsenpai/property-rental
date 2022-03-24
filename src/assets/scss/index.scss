@@ -4,7 +4,6 @@
 $primary: #231e46;
 $orange: #e84633;
 
-
 $theme-colors: (
   "primary": $primary,
   "orange": $orange,
@@ -127,3 +126,24 @@ ul {
     }
   }
 }
+
+.container-center {
+  height: calc(100vh - 64px - 72px);
+}
+  .slick-arrow {
+    z-index: 1;
+    &.slick-prev {
+      left: 2px;
+    }
+    &.slick-next {
+      right: 2px;
+    }
+  }
+  .slick-prev:before,
+  .slick-next:before {
+    color: rgb(134, 134, 134);
+    font-size: 20px;
+    font-weight: 900;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: rgb(255, 255, 255);
+  }
