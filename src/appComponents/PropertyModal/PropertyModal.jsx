@@ -165,13 +165,13 @@ export const PropertyModal = (props) => {
                 ))}
             </Descriptions.Item>
             <Descriptions.Item span={3}>
-            <Chart
+            {/* <Chart
        options={{
          data,
          primaryAxis,
          secondaryAxes,
        }}
-     />
+     /> */}
             </Descriptions.Item>
           </>
         ) : (
