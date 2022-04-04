@@ -4,15 +4,17 @@ import CurrencyFormat from "react-currency-format";
 import { Modal, Button, Divider, Descriptions, PageHeader, Empty, Tooltip, Space, Collapse, Carousel } from "antd";
 import { findIcon, getTagText, priceType, titleCase } from "../../helpers/helpers";
 import DescriptionsItem from "antd/lib/descriptions/Item";
+import { Chart } from "react-charts";
 
 const { Panel } = Collapse;
 
 export const PropertyModal = (props) => {
   const { showModal, setShowModal, propertyData } = props;
   const { category, extra, bedrooms, source, calc_posted, reduced, region, keywords, full_address, price_period, prop_type, price } = propertyData || {};
-  const { title, images, price_history, prop_address, agent, agent_phone, agent_address, sold_history, descr } = extra || {};
+  const { title, images, price_history, prop_address, agent, agent_phone, agent_address, sold_history, descr, floorplan, pdf } = extra || {};
 
   const [address, setAddress] = useState(null);
+  const [viewFloorPlan, setViewFloorPlan] = useState(false);
   const handleOk = () => {
     setShowModal(false);
   };
@@ -48,16 +50,15 @@ export const PropertyModal = (props) => {
           <CurrencyFormat value={price} displayType={"text"} thousandSeparator={true} prefix={"£"} />
           {priceType(price_period)}
         </Descriptions.Item>
-
-        {!address && (
-          <Descriptions.Item span={2} label="Address">
-            {prop_address}
-          </Descriptions.Item>
-        )}
-
         <Descriptions.Item span={3} label="Description">
           {descr}
         </Descriptions.Item>
+
+        {!address && (
+          <Descriptions.Item span={3} label="Address">
+            {prop_address}
+          </Descriptions.Item>
+        )}
 
         {/* {address && (
           <DescriptionsItem span={3} label="Full Address">
@@ -68,6 +69,38 @@ export const PropertyModal = (props) => {
           </DescriptionsItem>
         )} */}
       </Descriptions>
+
+      <br />
+      <Space>
+        {floorplan && (
+          <>
+            <Button onClick={() => setViewFloorPlan(true)}>View Floor Plan</Button>
+            <Modal width="700px" title="Floor Plan" visible={viewFloorPlan} footer={false} onCancel={() => setViewFloorPlan(false)}>
+              <img style={{ width: "100%" }} src={floorplan} alt="floorplan" />
+            </Modal>
+          </>
+        )}
+        {floorplan && (
+          <Button>
+            <a href={pdf} target="_blank" rel="noopener noreferrer">
+              View PDF
+            </a>
+          </Button>
+        )}
+      </Space>
+      <br />
+      <br />
+      {address && (
+        <Descriptions title={"Address"} bordered>
+          {Object.keys(address).map((keyName, i) => (
+            <DescriptionsItem span={1} key={i} label={titleCase(keyName.replaceAll("_", " "))}>
+              {address[keyName]}
+            </DescriptionsItem>
+          ))}
+        </Descriptions>
+      )}
+      <br />
+
       <Carousel arrows={true}>
         {images &&
           images.split(";").map((img, i) => (
@@ -87,17 +120,7 @@ export const PropertyModal = (props) => {
 
       <br />
 
-      {address && (
-        <Descriptions title={"Address"} bordered>
-          {Object.keys(address).map((keyName, i) => (
-            <DescriptionsItem span={1} key={i} label={titleCase(keyName.replaceAll("_", " "))}>
-              {address[keyName]}
-            </DescriptionsItem>
-          ))}
-        </Descriptions>
-      )}
-
-      <Space className="mt-2">
+      <Space className="mt-2 d-flex justify-content-center">
         {keywords?.length > 0 &&
           keywords.map((word, i) => (
             <Tooltip title={getTagText(word)}>
@@ -142,7 +165,13 @@ export const PropertyModal = (props) => {
                 ))}
             </Descriptions.Item>
             <Descriptions.Item span={3}>
-              <Empty />
+            <Chart
+       options={{
+         data,
+         primaryAxis,
+         secondaryAxes,
+       }}
+     />
             </Descriptions.Item>
           </>
         ) : (

@@ -1,5 +1,5 @@
 import { Autocomplete, InfoBox, InfoWindow, Marker, MarkerClusterer, StreetViewPanorama, StreetViewService, useGoogleMap } from "@react-google-maps/api";
-import { Col, Divider, Layout, Row, Select, Slider, Collapse, Popover, Tooltip, Spin, Drawer, Empty, Button } from "antd";
+import { Col, Divider, Layout, Row, Select, Slider, Collapse, Popover, Tooltip, Spin, Drawer, Empty, Button, message } from "antd";
 import React, { memo, useEffect, useState } from "react";
 import { MAP } from "react-google-maps/lib/constants";
 import { useRef } from "react";
@@ -9,7 +9,17 @@ import { PropertyCards } from "../../appComponents/PropertyCards/PropertyCards";
 import { MarkerPopover } from "../../uiComponents/MarkerPopover/MarkerPopover";
 import { PropertyCard } from "../../uiComponents/PropertyCard/PropertyCard";
 import { useAppDispatch, useAppSelector } from "../../utils/hooks";
-import { openStreetView, selectMapInstance, selectProperties, selectPropertyListMeta, selectPropertyLoading, selectStatus, selectStreetViewCords, sortBy } from "./slice";
+import {
+  openStreetView,
+  selectError,
+  selectMapInstance,
+  selectProperties,
+  selectPropertyListMeta,
+  selectPropertyLoading,
+  selectStatus,
+  selectStreetViewCords,
+  sortBy,
+} from "./slice";
 import { getKeywordsRulesList, getProperties, getPropertyTypes } from "./thunk";
 import * as queryString from "query-string";
 import "./_propertySearch.scss";
@@ -34,6 +44,7 @@ export const PropertySearch = () => {
   const streetViewCords = useAppSelector(selectStreetViewCords);
   const isLoading = useAppSelector(selectPropertyLoading);
   const propertyListMeta = useAppSelector(selectPropertyListMeta);
+  const error = useAppSelector(selectError);
 
   const dispatch = useAppDispatch();
 
@@ -57,6 +68,14 @@ export const PropertySearch = () => {
   useEffect(() => {
     console.log(propCardRef);
   }, [propCardRef.current]);
+
+  useEffect(() => {
+    if (error && typeof error === "string") {
+      console.log("ERROr", error);
+      message.error(error);
+      setVisible(false);
+    }
+  }, [error]);
 
   useEffect(() => {
     setSelectedProperty(propetyCardData);

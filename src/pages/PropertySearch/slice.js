@@ -1,7 +1,7 @@
 import { createSlice, isPending, isRejected } from "@reduxjs/toolkit";
 import { getKeywordsRulesList, getLandBounds, getProperties, getPropertyTypes } from "./thunk";
 
-const thunks = [getPropertyTypes, getKeywordsRulesList, getLandBounds];
+const thunks = [getPropertyTypes, getKeywordsRulesList, getLandBounds, getProperties];
 
 const initialState = {
   status: "idle",
@@ -16,6 +16,7 @@ const initialState = {
   mapInstance: null,
   favoriteProperties: [],
   selectedCardRef: null,
+  error: null,
 };
 
 export const slice = createSlice({
@@ -63,8 +64,10 @@ export const slice = createSlice({
         state.propertiesMeta = action.payload.meta;
         state.properties = action.payload.data;
       })
-      .addCase(getProperties.rejected, (state) => {
+      .addCase(getProperties.rejected, (state, action) => {
         state.status = "failed";
+        state.propLoading = false;
+        state.error = action.error.message;
       })
       .addCase(getKeywordsRulesList.fulfilled, (state, action) => {
         state.status = "idle";
@@ -76,9 +79,11 @@ export const slice = createSlice({
       })
       .addMatcher(isPending(...thunks), (state) => {
         state.status = "loading";
+        state.error = null;
       })
-      .addMatcher(isRejected(...thunks), (state) => {
+      .addMatcher(isRejected(...thunks), (state, action) => {
         state.status = "failed";
+        state.error = action.error.message;
       });
   },
 });
@@ -95,6 +100,7 @@ export const selectPropertyListMeta = (state) => state.propertySearch.properties
 export const selectMapInstance = (state) => state.propertySearch.mapInstance;
 export const selectFavoriteProps = (state) => state.propertySearch.favoriteProperties;
 export const selectSelectedCardRef = (state) => state.propertySearch.selectedCardRef;
+export const selectError = (state) => state.propertySearch.error;
 
 export const { openStreetView, sortBy, clearPropertyList, setMapInstance, setFavoriteProperties, removeFavoriteProperties, setSelectedCardRef } = slice.actions;
 
