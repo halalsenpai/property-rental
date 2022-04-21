@@ -30,12 +30,9 @@ export const Filter = ({ setActivePanel, setPayloadPropSearch, setPropertyList }
   const handleChange = (setState) => (value) => {
     setState(value);
   };
-  function onChange(checked) {
-    console.log(`switch to ${checked}`);
-  }
+  function onChange(checked) {}
 
   function onValuesChange(changedValues, allValues) {
-    console.log("form value change", allValues);
     allValues.category && setCategory(allValues.category);
   }
   const handleFormSubmit = (values) => {
