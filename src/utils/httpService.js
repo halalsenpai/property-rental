@@ -5,7 +5,7 @@ import { interceptor } from "./intercepter";
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_API,
   timeout: 180000,
-  headers: { origin: "https://propopp.psengine.co.uk" },
+  // headers: { origin: "https://propopp.psengine.co.uk" },
   //   withCredentials: true,
 });
 

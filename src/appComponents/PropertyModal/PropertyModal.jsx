@@ -4,7 +4,7 @@ import CurrencyFormat from "react-currency-format";
 import { Modal, Button, Divider, Descriptions, PageHeader, Empty, Tooltip, Space, Collapse, Carousel } from "antd";
 import { findIcon, getTagText, priceType, titleCase } from "../../helpers/helpers";
 import DescriptionsItem from "antd/lib/descriptions/Item";
-import { Chart } from "react-charts";
+import { LineChart } from "../LineChart/LineChart";
 
 const { Panel } = Collapse;
 
@@ -59,15 +59,6 @@ export const PropertyModal = (props) => {
             {prop_address}
           </Descriptions.Item>
         )}
-
-        {/* {address && (
-          <DescriptionsItem span={3} label="Full Address">
-            <div>
-              {console.log(address)}
-              <pre>{JSON.stringify(address, null, 3)}</pre>
-            </div>
-          </DescriptionsItem>
-        )} */}
       </Descriptions>
 
       <br />
@@ -144,10 +135,13 @@ export const PropertyModal = (props) => {
         </Descriptions.Item>
       </Descriptions>
       <Divider />
-      <Descriptions title={"Price History"} bordered>
-        {price_history?.length ? (
-          <>
-            <Descriptions.Item span={1}>
+
+      {price_history?.length && (
+        <>
+          <div className="ant-descriptions-title">Price History</div>
+          <br />
+          <div className="d-flex" style={{ height: "200px" }}>
+            <div className="w-50 p-3">
               <div className="d-flex justify-content-between all-text-muted">
                 <strong>Date</strong>
                 <strong>Price</strong>
@@ -163,23 +157,14 @@ export const PropertyModal = (props) => {
                     </span>
                   </div>
                 ))}
-            </Descriptions.Item>
-            <Descriptions.Item span={3}>
-            {/* <Chart
-       options={{
-         data,
-         primaryAxis,
-         secondaryAxes,
-       }}
-     /> */}
-            </Descriptions.Item>
-          </>
-        ) : (
-          <Descriptions.Item span={3}>
-            <Empty />
-          </Descriptions.Item>
-        )}
-      </Descriptions>
+            </div>
+            <div className="w-100 mx-4">
+              <LineChart data={price_history} priceType={priceType(price_period)} />
+            </div>
+          </div>
+        </>
+      )}
+
       <Divider />
       <Descriptions title={"Sold History"} bordered>
         {sold_history?.length ? (
@@ -193,7 +178,7 @@ export const PropertyModal = (props) => {
                 sold_history.length > 0 &&
                 sold_history.map((item, i) => (
                   <div className="d-flex justify-content-between all-text-muted">
-                    <span>{item?.date}</span>
+                    <span>{item?.date.split("-").reverse().join("-")}</span>
                     <span>{item?.price}</span>
                   </div>
                 ))}
