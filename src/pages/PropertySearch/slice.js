@@ -24,7 +24,6 @@ export const slice = createSlice({
   initialState,
   reducers: {
     openStreetView(state, action) {
-      // ✅ This "mutating" code is okay inside of createSlice!
       state.streetViewCords = action.payload;
     },
     sortBy(state, action) {

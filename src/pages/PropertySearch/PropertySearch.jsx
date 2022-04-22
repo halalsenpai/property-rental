@@ -207,7 +207,9 @@ export const PropertySearch = () => {
               </InfoWindow>
             )} */}
 
-            {streetViewCords && <StreetViewPanorama visible={true} onCloseClick={handleEmptyStreetViewCords} options={{ position: streetViewCords, enableCloseButton: true }} />}
+            {streetViewCords && (
+              <StreetViewPanorama visible={streetViewCords !== null} onCloseClick={handleEmptyStreetViewCords} options={{ position: streetViewCords, enableCloseButton: true }} />
+            )}
           </MapComponent>
         </Col>
       </Row>
